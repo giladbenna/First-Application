@@ -137,8 +137,7 @@ public class MainActivity extends AppCompatActivity {
         Button rightButton = findViewById(R.id.rightArrow);
         leftButton.setOnClickListener(v -> {
             if(player_row[0].getVisibility() == View.VISIBLE){
-                player_row[0].setVisibility(View.INVISIBLE);
-                player_row[2].setVisibility(View.VISIBLE);
+                player_row[0].setVisibility(View.VISIBLE);
             }
             if(player_row[1].getVisibility() == View.VISIBLE){
                 player_row[1].setVisibility(View.INVISIBLE);
@@ -151,8 +150,7 @@ public class MainActivity extends AppCompatActivity {
         });
         rightButton.setOnClickListener(v -> {
             if(player_row[2].getVisibility() == View.VISIBLE){
-                player_row[2].setVisibility(View.INVISIBLE);
-                player_row[0].setVisibility(View.VISIBLE);
+                player_row[2].setVisibility(View.VISIBLE);
             }
             if(player_row[1].getVisibility() == View.VISIBLE){
                 player_row[1].setVisibility(View.INVISIBLE);
