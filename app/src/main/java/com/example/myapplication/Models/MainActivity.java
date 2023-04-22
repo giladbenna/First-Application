@@ -3,7 +3,10 @@ package com.example.myapplication.Models;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -22,9 +25,10 @@ import com.google.android.material.imageview.ShapeableImageView;
 
 public class MainActivity extends AppCompatActivity {
     private AppCompatImageView main_IMG_background;
+    private int[] imageObs;
     private ImageView[][] matrix;
     private ShapeableImageView[] life;
-    private final int MAX_COLUMN = 3;
+    private final int MAX_COLUMN = 5;
     private ImageView[] player_row;
     private final int DELAY_GEN_OBS = 2000;
     private final int DELAY_UPDATE_OBS_ON_MATRIX = 1000;
@@ -61,7 +65,10 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 handler_gen_obs.postDelayed(this, DELAY_GEN_OBS); //Do it again in a second
                 int rand = (int) (Math.random() * MAX_COLUMN);
+                int rand2 = (int) (Math.random() * 1);
                 matrix[rand][0].setVisibility(View.VISIBLE);
+                matrix[rand][0].setImageResource(imageObs[rand2]);
+
             }
         };
         handler_gen_obs.postDelayed(runnable_gen_obs, 100); //Do it again in a second
@@ -79,6 +86,8 @@ public class MainActivity extends AppCompatActivity {
                             matrix[j][i].setVisibility(ImageView.INVISIBLE);
                             if(i!=MAX_COLUMN){
                                 matrix[j][i+1].setVisibility(ImageView.VISIBLE);
+                                Drawable drawable1 = matrix[j][i].getDrawable();
+                                //matrix[j][i+1].setImageResource();
                             }
                         }
                     }
@@ -147,10 +156,26 @@ public class MainActivity extends AppCompatActivity {
                 player_row[2].setVisibility(View.INVISIBLE);
                 player_row[1].setVisibility(View.VISIBLE);
             }
+            if(player_row[3].getVisibility() == View.VISIBLE){
+                player_row[3].setVisibility(View.INVISIBLE);
+                player_row[2].setVisibility(View.VISIBLE);
+            }
+            if(player_row[4].getVisibility() == View.VISIBLE){
+                player_row[4].setVisibility(View.INVISIBLE);
+                player_row[3].setVisibility(View.VISIBLE);
+            }
         });
         rightButton.setOnClickListener(v -> {
+            if(player_row[4].getVisibility() == View.VISIBLE){
+                player_row[4].setVisibility(View.VISIBLE);
+            }
+            if(player_row[3].getVisibility() == View.VISIBLE){
+                player_row[3].setVisibility(View.INVISIBLE);
+                player_row[4].setVisibility(View.VISIBLE);
+            }
             if(player_row[2].getVisibility() == View.VISIBLE){
-                player_row[2].setVisibility(View.VISIBLE);
+                player_row[2].setVisibility(View.INVISIBLE);
+                player_row[3].setVisibility(View.VISIBLE);
             }
             if(player_row[1].getVisibility() == View.VISIBLE){
                 player_row[1].setVisibility(View.INVISIBLE);
@@ -170,21 +195,43 @@ public class MainActivity extends AppCompatActivity {
                 findViewById(R.id.image_col_00),
                 findViewById(R.id.image_col_10),
                 findViewById(R.id.image_col_20),
-                findViewById(R.id.image_col_30)};
+                findViewById(R.id.image_col_30),
+                findViewById(R.id.image_col_40),
+                findViewById(R.id.image_col_50)};
         ImageView[] col_1 = new ImageView[]{
                 findViewById(R.id.image_col_01),
                 findViewById(R.id.image_col_11),
                 findViewById(R.id.image_col_21),
-                findViewById(R.id.image_col_31)};
+                findViewById(R.id.image_col_31),
+                findViewById(R.id.image_col_41),
+                findViewById(R.id.image_col_51)};
         ImageView[] col_2 = new ImageView[]{
                 findViewById(R.id.image_col_02),
                 findViewById(R.id.image_col_12),
                 findViewById(R.id.image_col_22),
-                findViewById(R.id.image_col_32)};
+                findViewById(R.id.image_col_32),
+                findViewById(R.id.image_col_42),
+                findViewById(R.id.image_col_52)};
+        ImageView[] col_3 = new ImageView[]{
+                findViewById(R.id.image_col_03),
+                findViewById(R.id.image_col_13),
+                findViewById(R.id.image_col_23),
+                findViewById(R.id.image_col_33),
+                findViewById(R.id.image_col_43),
+                findViewById(R.id.image_col_53)};
+        ImageView[] col_4 = new ImageView[]{
+                findViewById(R.id.image_col_04),
+                findViewById(R.id.image_col_14),
+                findViewById(R.id.image_col_24),
+                findViewById(R.id.image_col_34),
+                findViewById(R.id.image_col_44),
+                findViewById(R.id.image_col_54)};
         player_row = new ImageView[]{
                 findViewById(R.id.Player_0),
                 findViewById(R.id.Player_1),
-                findViewById(R.id.Player_2)};
+                findViewById(R.id.Player_2),
+                findViewById(R.id.Player_3),
+                findViewById(R.id.Player_4)};
         life = new ShapeableImageView[]{
                 findViewById(R.id.main_IMG_heart1),
                 findViewById(R.id.main_IMG_heart2),
@@ -193,7 +240,14 @@ public class MainActivity extends AppCompatActivity {
         matrix = new ImageView[][]{
                 col_0,
                 col_1,
-                col_2};
+                col_2,
+                col_3,
+                col_4};
+        imageObs = new int[]{
+                R.drawable.balbazor,
+                R.drawable.pikachu
+
+                };
         }
 
     }

@@ -19,7 +19,7 @@ public class GameManager {
     }
 
     public int findWherePlayerIs(ImageView[] player) {
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 5; i++) {
             if (player[i].getVisibility() == View.VISIBLE) {
                 return i;
             }
