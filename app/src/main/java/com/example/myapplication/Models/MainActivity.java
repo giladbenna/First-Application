@@ -65,10 +65,10 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 handler_gen_obs.postDelayed(this, DELAY_GEN_OBS); //Do it again in a second
                 int rand = (int) (Math.random() * MAX_COLUMN);
-                int rand2 = (int) (Math.random() * 1);
+                int rand2 = (int) (Math.random() * 4);
                 matrix[rand][0].setVisibility(View.VISIBLE);
+                //matrix[rand][0].setImageDrawable(imageObs[rand2]);
                 matrix[rand][0].setImageResource(imageObs[rand2]);
-
             }
         };
         handler_gen_obs.postDelayed(runnable_gen_obs, 100); //Do it again in a second
@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
                             if(i!=MAX_COLUMN){
                                 matrix[j][i+1].setVisibility(ImageView.VISIBLE);
                                 Drawable drawable1 = matrix[j][i].getDrawable();
-                                //matrix[j][i+1].setImageResource();
+                                matrix[j][i+1].setImageDrawable(drawable1);
                             }
                         }
                     }
@@ -244,10 +244,16 @@ public class MainActivity extends AppCompatActivity {
                 col_3,
                 col_4};
         imageObs = new int[]{
+                R.drawable.pikachu,
                 R.drawable.balbazor,
-                R.drawable.pikachu
+                R.drawable.squritel,
+                R.drawable.obstacle_coin};
 
-                };
+
+//        ImageView[] imageObs1 = new ImageView[]{
+//                findViewById(R.drawable.balbazor),
+//                findViewById(R.drawable.pikachu)
+//        };
         }
 
     }
