@@ -2,9 +2,6 @@ package com.example.myapplication.Logic;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.google.android.material.imageview.ShapeableImageView;
-
-import java.lang.Math;
 public class GameManager {
     public int life = 3;
     public boolean checkIfHit(ImageView obs){

@@ -178,7 +178,6 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:scaleType="centerCrop"
-                android:src="@drawable/balbazor"
                 android:visibility="invisible"
                 tools:ignore="NestedWeights" />
 
@@ -188,7 +187,6 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:scaleType="centerCrop"
-                android:src="@drawable/balbazor"
                 android:visibility="invisible" />
 
             <ImageView
@@ -197,7 +195,6 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:scaleType="centerCrop"
-                android:src="@drawable/balbazor"
                 android:visibility="invisible" />
 
             <ImageView
@@ -206,7 +203,6 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:scaleType="centerCrop"
-                android:src="@drawable/balbazor"
                 android:visibility="invisible" />
             <ImageView
                 android:id="@+id/image_col_42"
@@ -214,7 +210,6 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:scaleType="centerCrop"
-                android:src="@drawable/balbazor"
                 android:visibility="invisible" />
 
             <ImageView
@@ -223,7 +218,6 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:scaleType="centerCrop"
-                android:src="@drawable/balbazor"
                 android:visibility="invisible" />
         </LinearLayout>
 
@@ -240,7 +234,6 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:scaleType="centerCrop"
-                android:src="@drawable/balbazor"
                 android:visibility="invisible" />
 
             <ImageView
@@ -249,7 +242,6 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:scaleType="centerCrop"
-                android:src="@drawable/balbazor"
                 android:visibility="invisible" />
 
             <ImageView
@@ -258,7 +250,6 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:scaleType="centerCrop"
-                android:src="@drawable/balbazor"
                 android:visibility="invisible" />
 
             <ImageView
@@ -267,7 +258,6 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:scaleType="centerCrop"
-                android:src="@drawable/balbazor"
                 android:visibility="invisible" />
             <ImageView
                 android:id="@+id/image_col_43"
@@ -275,7 +265,6 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:scaleType="centerCrop"
-                android:src="@drawable/balbazor"
                 android:visibility="invisible" />
 
             <ImageView
@@ -284,7 +273,6 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:scaleType="centerCrop"
-                android:src="@drawable/balbazor"
                 android:visibility="invisible" />
         </LinearLayout>
 
@@ -301,7 +289,6 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:scaleType="centerCrop"
-                android:src="@drawable/balbazor"
                 android:visibility="invisible" />
 
             <ImageView
@@ -310,7 +297,6 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:scaleType="centerCrop"
-                android:src="@drawable/balbazor"
                 android:visibility="invisible" />
 
             <ImageView
@@ -319,7 +305,6 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:scaleType="centerCrop"
-                android:src="@drawable/balbazor"
                 android:visibility="invisible" />
 
             <ImageView
@@ -328,7 +313,6 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:scaleType="centerCrop"
-                android:src="@drawable/balbazor"
                 android:visibility="invisible" />
             <ImageView
                 android:id="@+id/image_col_44"
@@ -336,7 +320,6 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:scaleType="centerCrop"
-                android:src="@drawable/balbazor"
                 android:visibility="invisible" />
 
             <ImageView
@@ -345,7 +328,6 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:scaleType="centerCrop"
-                android:src="@drawable/balbazor"
                 android:visibility="invisible" />
         </LinearLayout>
 

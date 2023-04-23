@@ -3,21 +3,17 @@ package com.example.myapplication.Models;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
 
-import android.annotation.SuppressLint;
+
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.media.Image;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
-
 import com.bumptech.glide.Glide;
 import com.example.myapplication.Logic.GameManager;
 import com.example.myapplication.R;
@@ -249,18 +245,6 @@ public class MainActivity extends AppCompatActivity {
                 R.drawable.squritel,
                 R.drawable.obstacle_coin};
 
-
-//        ImageView[] imageObs1 = new ImageView[]{
-//                findViewById(R.drawable.balbazor),
-//                findViewById(R.drawable.pikachu)
-//        };
         }
 
     }
-    //<androidx.appcompat.widget.AppCompatImageView
-    //        android:id="@+id/main_IMG_background"
-    //        android:layout_width="match_parent"
-    //        android:layout_height="match_parent"/>
-
-
-
