@@ -2,14 +2,17 @@ package com.example.myapplication.Models;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
+import androidx.core.content.ContextCompat;
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -36,10 +39,13 @@ public class MainActivity extends AppCompatActivity {
     int playerIndex = 0;
     boolean hit = false;
     boolean endGame = false;
+    Drawable Obstacle_Near_Player;
+    Drawable Obstacle_Coin;
 
     public MainActivity() {
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         findViews();
-
+        Obstacle_Coin = getResources().getDrawable((R.drawable.obstacle_coin));
         // generate new obs
         generatingObstacles();
         moveObstacle();
@@ -73,9 +79,12 @@ public class MainActivity extends AppCompatActivity {
     private void moveObstacle() {
 
         runnable_upd_mat = new Runnable() {
+            @SuppressLint("UseCompatLoadingForDrawables")
             @Override
             public void run() {
                 handler_update_on_matrix.postDelayed(this, DELAY_UPDATE_OBS_ON_MATRIX); //Do it again in a second
+                playerIndex = gameManager.findWherePlayerIs(player_row);
+                hit = gameManager.checkIfHit(matrix[playerIndex][MAX_COLUMN]);
                 for(int j = 0; j < MAX_COLUMN; j++){
                     for(int i = MAX_COLUMN ; i >= 0 ; i--){
                         if(matrix[j][i].getVisibility() == View.VISIBLE) {
@@ -90,16 +99,23 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 ButtonLog();
-                playerIndex = gameManager.findWherePlayerIs(player_row);
-                hit = gameManager.checkIfHit(matrix[playerIndex][MAX_COLUMN]);
+
                 endGame = gameManager.endGame();
+                Obstacle_Near_Player = matrix[playerIndex][MAX_COLUMN].getDrawable();
+//                Obstacle_Coin = getResources().getDrawable((R.drawable.obstacle_coin));
+
 
                 if(hit){
-                    delHeart(life);
-                    gameManager.delHeartFromManager();
-                    vibrate();
-                    if(gameManager.life > 0){
-                        messageOnHit();
+                    if(Obstacle_Near_Player.equals(Obstacle_Coin)){
+
+                    }
+                    else {
+                        delHeart(life);
+                        gameManager.delHeartFromManager();
+                        vibrate();
+                        if (gameManager.life > 0) {
+                            messageOnHit();
+                        }
                     }
                 }
                 if(endGame){
