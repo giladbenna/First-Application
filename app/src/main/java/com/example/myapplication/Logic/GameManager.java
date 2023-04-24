@@ -11,6 +11,10 @@ public class GameManager {
     public void delHeartFromManager(){
         life--;
     }
+    public void addHeartFromManager(){
+        if(life < 3)
+            life++;
+    }
     public boolean endGame(){
         return life == 0;
     }

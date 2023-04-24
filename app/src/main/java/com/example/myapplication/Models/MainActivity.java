@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     boolean endGame = false;
     Drawable Obstacle_Near_Player;
     Drawable Obstacle_Coin;
+    int i;
 
     public MainActivity() {
     }
@@ -53,11 +54,12 @@ public class MainActivity extends AppCompatActivity {
 
 
         findViews();
+
         Obstacle_Coin = getResources().getDrawable((R.drawable.obstacle_coin));
         // generate new obs
         generatingObstacles();
         moveObstacle();
-        Glide.with(this).load(R.drawable.backgroundpokemon).centerCrop().into(main_IMG_background);
+        Glide.with(this).load(R.drawable.pokemon_background_forest).centerCrop().into(main_IMG_background);
     }
 
     private void generatingObstacles()
@@ -102,12 +104,11 @@ public class MainActivity extends AppCompatActivity {
 
                 endGame = gameManager.endGame();
                 Obstacle_Near_Player = matrix[playerIndex][MAX_COLUMN].getDrawable();
-//                Obstacle_Coin = getResources().getDrawable((R.drawable.obstacle_coin));
-
 
                 if(hit){
-                    if(Obstacle_Near_Player.equals(Obstacle_Coin)){
-
+                    if(Obstacle_Near_Player == Obstacle_Coin){
+                        addHeart(life);
+                        gameManager.addHeartFromManager();
                     }
                     else {
                         delHeart(life);
@@ -137,6 +138,14 @@ public class MainActivity extends AppCompatActivity {
     }
     private void delHeart(ShapeableImageView[] hearts){
         for (int i = 0; i < 3; i++) {
+            if (hearts[i].getVisibility() == View.VISIBLE) {
+                hearts[i].setVisibility(ShapeableImageView.INVISIBLE);
+                break;
+            }
+        }
+    }
+    private void addHeart(ShapeableImageView[] hearts){
+        for (int i = 3; i > 0; i--) {
             if (hearts[i].getVisibility() == View.VISIBLE) {
                 hearts[i].setVisibility(ShapeableImageView.INVISIBLE);
                 break;
