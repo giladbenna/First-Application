@@ -104,8 +104,6 @@ public class MainActivity extends AppCompatActivity {
 
                 endGame = gameManager.endGame();
                 Obstacle_Near_Player = matrix[playerIndex][MAX_COLUMN].getDrawable();
-                Obstacle_Near_Player = matrix[playerIndex][MAX_COLUMN].getDrawable();
-
 
                 if(hit){
                     if(Obstacle_Near_Player == Obstacle_Coin){
