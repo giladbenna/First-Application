@@ -2,7 +2,6 @@ package com.example.myapplication.Models;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
-import androidx.core.content.ContextCompat;
 
 
 import android.annotation.SuppressLint;
@@ -12,7 +11,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -27,7 +25,8 @@ public class MainActivity extends AppCompatActivity {
     private int[] imageObs;
     private ImageView[][] matrix;
     private ShapeableImageView[] life;
-    private final int MAX_COLUMN = 5;
+    private final int MAX_ROW = 5;
+    private final int MAX_COLUMN = 4;
     private ImageView[] player_row;
     private final int DELAY_GEN_OBS = 2000;
     private final int DELAY_UPDATE_OBS_ON_MATRIX = 1000;
@@ -39,10 +38,7 @@ public class MainActivity extends AppCompatActivity {
     int playerIndex = 0;
     boolean hit = false;
     boolean endGame = false;
-    Drawable Obstacle_Near_Player;
-    Drawable Obstacle_Coin;
-    int i;
-
+    Drawable.ConstantState Obstacle_Coin;
     public MainActivity() {
     }
 
@@ -54,8 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         findViews();
-
-        Obstacle_Coin = getResources().getDrawable((R.drawable.obstacle_coin));
+        Obstacle_Coin = getDrawable((R.drawable.obstacle_coin)).getConstantState();
         // generate new obs
         generatingObstacles();
         moveObstacle();
@@ -68,11 +63,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 handler_gen_obs.postDelayed(this, DELAY_GEN_OBS); //Do it again in a second
-                int rand = (int) (Math.random() * MAX_COLUMN);
-                int rand2 = (int) (Math.random() * 4);
-                matrix[rand][0].setVisibility(View.VISIBLE);
+                int rand = (int) (Math.random() * MAX_ROW);
+                //int rand2 = (int) (Math.random() * 4);
+                matrix[0][rand].setImageResource(imageObs[3]);
+                matrix[0][rand].setVisibility(View.VISIBLE);
                 //matrix[rand][0].setImageDrawable(imageObs[rand2]);
-                matrix[rand][0].setImageResource(imageObs[rand2]);
             }
         };
         handler_gen_obs.postDelayed(runnable_gen_obs, 100); //Do it again in a second
@@ -84,14 +79,15 @@ public class MainActivity extends AppCompatActivity {
             @SuppressLint("UseCompatLoadingForDrawables")
             @Override
             public void run() {
+                Drawable.ConstantState Obstacle_Near_Player;
                 handler_update_on_matrix.postDelayed(this, DELAY_UPDATE_OBS_ON_MATRIX); //Do it again in a second
                 playerIndex = gameManager.findWherePlayerIs(player_row);
-                hit = gameManager.checkIfHit(matrix[playerIndex][MAX_COLUMN]);
-                for(int j = 0; j < MAX_COLUMN; j++){
-                    for(int i = MAX_COLUMN ; i >= 0 ; i--){
+                hit = gameManager.checkIfHit(matrix[playerIndex][MAX_ROW]);
+                for(int j = 0; j < MAX_ROW; j++){
+                    for(int i = MAX_ROW; i >= 0 ; i--){
                         if(matrix[j][i].getVisibility() == View.VISIBLE) {
                             matrix[j][i].setVisibility(ImageView.INVISIBLE);
-                            if(i!=MAX_COLUMN){
+                            if(i!= MAX_ROW){
                                 matrix[j][i+1].setVisibility(ImageView.VISIBLE);
                                 Drawable drawable1 = matrix[j][i].getDrawable();
                                 matrix[j][i+1].setImageDrawable(drawable1);
@@ -103,10 +99,11 @@ public class MainActivity extends AppCompatActivity {
                 ButtonLog();
 
                 endGame = gameManager.endGame();
-                Obstacle_Near_Player = matrix[playerIndex][MAX_COLUMN].getDrawable();
 
                 if(hit){
-                    if(Obstacle_Near_Player == Obstacle_Coin){
+                    Obstacle_Near_Player = matrix[playerIndex][MAX_ROW].getDrawable().getConstantState();
+
+                    if(Obstacle_Near_Player.equals(Obstacle_Coin)){
                         addHeart(life);
                         gameManager.addHeartFromManager();
                     }
@@ -212,41 +209,43 @@ public class MainActivity extends AppCompatActivity {
 
     private void findViews() {
         main_IMG_background = findViewById(R.id.main_IMG_background);
-        ImageView[] col_0 = new ImageView[]{
+        ImageView[] row_0 = new ImageView[]{
                 findViewById(R.id.image_col_00),
-                findViewById(R.id.image_col_10),
-                findViewById(R.id.image_col_20),
-                findViewById(R.id.image_col_30),
-                findViewById(R.id.image_col_40),
-                findViewById(R.id.image_col_50)};
-        ImageView[] col_1 = new ImageView[]{
                 findViewById(R.id.image_col_01),
-                findViewById(R.id.image_col_11),
-                findViewById(R.id.image_col_21),
-                findViewById(R.id.image_col_31),
-                findViewById(R.id.image_col_41),
-                findViewById(R.id.image_col_51)};
-        ImageView[] col_2 = new ImageView[]{
                 findViewById(R.id.image_col_02),
-                findViewById(R.id.image_col_12),
-                findViewById(R.id.image_col_22),
-                findViewById(R.id.image_col_32),
-                findViewById(R.id.image_col_42),
-                findViewById(R.id.image_col_52)};
-        ImageView[] col_3 = new ImageView[]{
                 findViewById(R.id.image_col_03),
+                findViewById(R.id.image_col_04)};
+        ImageView[] row_1 = new ImageView[]{
+                findViewById(R.id.image_col_10),
+                findViewById(R.id.image_col_11),
+                findViewById(R.id.image_col_12),
                 findViewById(R.id.image_col_13),
+                findViewById(R.id.image_col_14)};
+        ImageView[] row_2 = new ImageView[]{
+                findViewById(R.id.image_col_20),
+                findViewById(R.id.image_col_21),
+                findViewById(R.id.image_col_22),
                 findViewById(R.id.image_col_23),
+                findViewById(R.id.image_col_24)};
+        ImageView[] row_3 = new ImageView[]{
+                findViewById(R.id.image_col_30),
+                findViewById(R.id.image_col_31),
+                findViewById(R.id.image_col_32),
                 findViewById(R.id.image_col_33),
+                findViewById(R.id.image_col_34)};
+        ImageView[] row_4 = new ImageView[]{
+                findViewById(R.id.image_col_40),
+                findViewById(R.id.image_col_41),
+                findViewById(R.id.image_col_42),
                 findViewById(R.id.image_col_43),
-                findViewById(R.id.image_col_53)};
-        ImageView[] col_4 = new ImageView[]{
-                findViewById(R.id.image_col_04),
-                findViewById(R.id.image_col_14),
-                findViewById(R.id.image_col_24),
-                findViewById(R.id.image_col_34),
-                findViewById(R.id.image_col_44),
+                findViewById(R.id.image_col_44)};
+        ImageView[] row_5 = new ImageView[]{
+                findViewById(R.id.image_col_50),
+                findViewById(R.id.image_col_51),
+                findViewById(R.id.image_col_52),
+                findViewById(R.id.image_col_53),
                 findViewById(R.id.image_col_54)};
+
         player_row = new ImageView[]{
                 findViewById(R.id.Player_0),
                 findViewById(R.id.Player_1),
@@ -259,11 +258,12 @@ public class MainActivity extends AppCompatActivity {
                 findViewById(R.id.main_IMG_heart3)};
 
         matrix = new ImageView[][]{
-                col_0,
-                col_1,
-                col_2,
-                col_3,
-                col_4};
+                row_0,
+                row_1,
+                row_2,
+                row_3,
+                row_4,
+                row_5};
         imageObs = new int[]{
                 R.drawable.pikachu,
                 R.drawable.balbazor,
