@@ -83,14 +83,14 @@ public class MainActivity extends AppCompatActivity {
                 handler_update_on_matrix.postDelayed(this, DELAY_UPDATE_OBS_ON_MATRIX); //Do it again in a second
                 playerIndex = gameManager.findWherePlayerIs(player_row);
                 hit = gameManager.checkIfHit(matrix[playerIndex][MAX_ROW]);
-                for(int j = 0; j < MAX_ROW; j++){
-                    for(int i = MAX_ROW; i >= 0 ; i--){
-                        if(matrix[j][i].getVisibility() == View.VISIBLE) {
-                            matrix[j][i].setVisibility(ImageView.INVISIBLE);
-                            if(i!= MAX_ROW){
-                                matrix[j][i+1].setVisibility(ImageView.VISIBLE);
-                                Drawable drawable1 = matrix[j][i].getDrawable();
-                                matrix[j][i+1].setImageDrawable(drawable1);
+                for(int column = 0; column < MAX_ROW; column++){
+                    for(int row = MAX_ROW; row >= 0 ; row--){
+                        if(matrix[row][column].getVisibility() == View.VISIBLE) {
+                            matrix[row][column].setVisibility(ImageView.INVISIBLE);
+                            if(row != MAX_ROW){
+                                matrix[row+1][column].setVisibility(ImageView.VISIBLE);
+                                Drawable drawable1 = matrix[row][column].getDrawable();
+                                matrix[row+1][column].setImageDrawable(drawable1);
                             }
                         }
                     }
