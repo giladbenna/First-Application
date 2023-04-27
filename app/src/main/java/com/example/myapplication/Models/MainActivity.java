@@ -6,6 +6,8 @@ import androidx.appcompat.widget.AppCompatImageView;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,6 +17,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
+
 import com.bumptech.glide.Glide;
 import com.example.myapplication.Logic.GameManager;
 import com.example.myapplication.R;
@@ -36,9 +39,12 @@ public class MainActivity extends AppCompatActivity {
     private Runnable runnable_upd_mat;
     private Runnable runnable_gen_obs;
     int playerIndex = 0;
-    boolean hit = false;
-    boolean endGame = false;
-    Drawable.ConstantState Obstacle_Coin;
+    boolean ifHit = false;
+    boolean ifEndGame = false;
+    Bitmap obstacleCoinBitmap;
+    Drawable Obstacle_Coin;
+    int obstacleCoinResId;
+
     public MainActivity() {
     }
 
@@ -50,25 +56,24 @@ public class MainActivity extends AppCompatActivity {
 
 
         findViews();
-        Obstacle_Coin = getDrawable((R.drawable.obstacle_coin)).getConstantState();
+        Obstacle_Coin = getResources().getDrawable(R.drawable.obstacle_coin);
+//        obstacleCoinBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.obstacle_coin);
+//        obstacleCoinResId = R.drawable.obstacle_coin;
         // generate new obs
         generatingObstacles();
         moveObstacle();
         Glide.with(this).load(R.drawable.pokemon_background_forest).centerCrop().into(main_IMG_background);
     }
 
-    private void generatingObstacles()
-    {
+    private void generatingObstacles() {
         runnable_gen_obs = new Runnable() {
             @Override
             public void run() {
                 handler_gen_obs.postDelayed(this, DELAY_GEN_OBS); //Do it again in a second
                 int rand = (int) (Math.random() * MAX_ROW);
                 //int rand2 = (int) (Math.random() * 4);
-
                 matrix[0][rand].setVisibility(View.VISIBLE);
                 matrix[0][rand].setImageResource(imageObs[3]);
-                //matrix[rand][0].setImageDrawable(imageObs[rand2]);
             }
         };
         handler_gen_obs.postDelayed(runnable_gen_obs, 100); //Do it again in a second
@@ -77,21 +82,20 @@ public class MainActivity extends AppCompatActivity {
     private void moveObstacle() {
 
         runnable_upd_mat = new Runnable() {
-            @SuppressLint("UseCompatLoadingForDrawables")
             @Override
             public void run() {
-                Drawable.ConstantState Obstacle_Near_Player;
+                ImageView Obstacle_Near_Player;
                 handler_update_on_matrix.postDelayed(this, DELAY_UPDATE_OBS_ON_MATRIX); //Do it again in a second
                 playerIndex = gameManager.findWherePlayerIs(player_row);
-                hit = gameManager.checkIfHit(matrix[MAX_ROW][playerIndex]);
-                for(int column = 0; column <= MAX_COLUMN; column++){
-                    for(int row = MAX_ROW; row >= 0 ; row--){
-                        if(matrix[row][column].getVisibility() == View.VISIBLE) {
+                ifHit = gameManager.checkIfHit(matrix[MAX_ROW][playerIndex]);
+                for (int column = 0; column <= MAX_COLUMN; column++) {
+                    for (int row = MAX_ROW; row >= 0; row--) {
+                        if (matrix[row][column].getVisibility() == View.VISIBLE) {
                             matrix[row][column].setVisibility(ImageView.INVISIBLE);
-                            if(row != MAX_ROW){
-                                matrix[row+1][column].setVisibility(ImageView.VISIBLE);
+                            if (row != MAX_ROW) {
+                                matrix[row + 1][column].setVisibility(ImageView.VISIBLE);
                                 Drawable drawable1 = matrix[row][column].getDrawable();
-                                matrix[row+1][column].setImageDrawable(drawable1);
+                                matrix[row + 1][column].setImageDrawable(drawable1);
                             }
                         }
                     }
@@ -99,24 +103,24 @@ public class MainActivity extends AppCompatActivity {
 
                 ButtonLog();
 
-                endGame = gameManager.endGame();
+                ifEndGame = gameManager.endGame();
 
-                if(hit){
-//                    Obstacle_Near_Player = matrix[playerIndex][MAX_ROW].getDrawable().getConstantState();
-//                    if(Obstacle_Near_Player.equals(Obstacle_Coin)){
-//                        addHeart(life);
-//                        gameManager.addHeartFromManager();
-//                    }
-//                    else {
+                if (ifHit) {
+                    Obstacle_Near_Player = matrix[MAX_ROW][playerIndex];
+                    //int obstacleNearPlayerResId = Obstacle_Near_Player.getConstantState().;
+                    if (Obstacle_Near_Player.getDrawable().getConstantState().equals(Obstacle_Coin.getConstantState())) {
+                        addHeart(life);
+                        gameManager.addHeartFromManager();
+                    } else {
                         delHeart(life);
                         gameManager.delHeartFromManager();
                         vibrate();
                         if (gameManager.life > 0) {
                             messageOnHit();
                         }
-//                    }
+                    }
                 }
-                if(endGame){
+                if (ifEndGame) {
                     messageOnEndGame();
                     stopRunnable();
                 }
@@ -124,16 +128,19 @@ public class MainActivity extends AppCompatActivity {
         };
         handler_update_on_matrix.postDelayed(runnable_upd_mat, DELAY_UPDATE_OBS_ON_MATRIX); //Do it again in a second
     }
+
     private void stopRunnable() {
         handler_update_on_matrix.removeCallbacks(runnable_upd_mat);
         handler_gen_obs.removeCallbacks(runnable_gen_obs);
     }
-    private void vibrate(){
+
+    private void vibrate() {
         // Vibrate for 600 milliseconds
         Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         vibrator.vibrate(VibrationEffect.createOneShot(600, VibrationEffect.DEFAULT_AMPLITUDE));
     }
-    private void delHeart(ShapeableImageView[] hearts){
+
+    private void delHeart(ShapeableImageView[] hearts) {
         for (int i = 0; i < 3; i++) {
             if (hearts[i].getVisibility() == View.VISIBLE) {
                 hearts[i].setVisibility(ShapeableImageView.INVISIBLE);
@@ -141,7 +148,8 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-    private void addHeart(ShapeableImageView[] hearts){
+
+    private void addHeart(ShapeableImageView[] hearts) {
         for (int i = 3; i > 0; i--) {
             if (hearts[i].getVisibility() == View.VISIBLE) {
                 hearts[i].setVisibility(ShapeableImageView.INVISIBLE);
@@ -150,56 +158,57 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void messageOnHit(){
-        Toast toast = Toast.makeText(this,"Be Careful !",Toast.LENGTH_SHORT);
-        toast.show();
-    }
-    private void messageOnEndGame(){
-        Toast toast = Toast.makeText(this,"YOU LOSE !",Toast.LENGTH_LONG);
+    private void messageOnHit() {
+        Toast toast = Toast.makeText(this, "Be Careful !", Toast.LENGTH_SHORT);
         toast.show();
     }
 
-    private void ButtonLog(){
+    private void messageOnEndGame() {
+        Toast toast = Toast.makeText(this, "YOU LOSE !", Toast.LENGTH_LONG);
+        toast.show();
+    }
+
+    private void ButtonLog() {
         Button leftButton = findViewById(R.id.leftArrow);
         Button rightButton = findViewById(R.id.rightArrow);
         leftButton.setOnClickListener(v -> {
-            if(player_row[0].getVisibility() == View.VISIBLE){
+            if (player_row[0].getVisibility() == View.VISIBLE) {
                 player_row[0].setVisibility(View.VISIBLE);
             }
-            if(player_row[1].getVisibility() == View.VISIBLE){
+            if (player_row[1].getVisibility() == View.VISIBLE) {
                 player_row[1].setVisibility(View.INVISIBLE);
                 player_row[0].setVisibility(View.VISIBLE);
             }
-            if(player_row[2].getVisibility() == View.VISIBLE){
+            if (player_row[2].getVisibility() == View.VISIBLE) {
                 player_row[2].setVisibility(View.INVISIBLE);
                 player_row[1].setVisibility(View.VISIBLE);
             }
-            if(player_row[3].getVisibility() == View.VISIBLE){
+            if (player_row[3].getVisibility() == View.VISIBLE) {
                 player_row[3].setVisibility(View.INVISIBLE);
                 player_row[2].setVisibility(View.VISIBLE);
             }
-            if(player_row[4].getVisibility() == View.VISIBLE){
+            if (player_row[4].getVisibility() == View.VISIBLE) {
                 player_row[4].setVisibility(View.INVISIBLE);
                 player_row[3].setVisibility(View.VISIBLE);
             }
         });
         rightButton.setOnClickListener(v -> {
-            if(player_row[4].getVisibility() == View.VISIBLE){
+            if (player_row[4].getVisibility() == View.VISIBLE) {
                 player_row[4].setVisibility(View.VISIBLE);
             }
-            if(player_row[3].getVisibility() == View.VISIBLE){
+            if (player_row[3].getVisibility() == View.VISIBLE) {
                 player_row[3].setVisibility(View.INVISIBLE);
                 player_row[4].setVisibility(View.VISIBLE);
             }
-            if(player_row[2].getVisibility() == View.VISIBLE){
+            if (player_row[2].getVisibility() == View.VISIBLE) {
                 player_row[2].setVisibility(View.INVISIBLE);
                 player_row[3].setVisibility(View.VISIBLE);
             }
-            if(player_row[1].getVisibility() == View.VISIBLE){
+            if (player_row[1].getVisibility() == View.VISIBLE) {
                 player_row[1].setVisibility(View.INVISIBLE);
                 player_row[2].setVisibility(View.VISIBLE);
             }
-            if(player_row[0].getVisibility() == View.VISIBLE){
+            if (player_row[0].getVisibility() == View.VISIBLE) {
                 player_row[0].setVisibility(View.INVISIBLE);
                 player_row[1].setVisibility(View.VISIBLE);
             }
@@ -270,6 +279,6 @@ public class MainActivity extends AppCompatActivity {
                 R.drawable.squritel,
                 R.drawable.obstacle_coin};
 
-        }
-
     }
+
+}
