@@ -65,8 +65,9 @@ public class MainActivity extends AppCompatActivity {
                 handler_gen_obs.postDelayed(this, DELAY_GEN_OBS); //Do it again in a second
                 int rand = (int) (Math.random() * MAX_ROW);
                 //int rand2 = (int) (Math.random() * 4);
-                matrix[0][rand].setImageResource(imageObs[3]);
+
                 matrix[0][rand].setVisibility(View.VISIBLE);
+                matrix[0][rand].setImageResource(imageObs[3]);
                 //matrix[rand][0].setImageDrawable(imageObs[rand2]);
             }
         };
@@ -82,8 +83,8 @@ public class MainActivity extends AppCompatActivity {
                 Drawable.ConstantState Obstacle_Near_Player;
                 handler_update_on_matrix.postDelayed(this, DELAY_UPDATE_OBS_ON_MATRIX); //Do it again in a second
                 playerIndex = gameManager.findWherePlayerIs(player_row);
-                hit = gameManager.checkIfHit(matrix[playerIndex][MAX_ROW]);
-                for(int column = 0; column < MAX_ROW; column++){
+                hit = gameManager.checkIfHit(matrix[MAX_ROW][playerIndex]);
+                for(int column = 0; column <= MAX_COLUMN; column++){
                     for(int row = MAX_ROW; row >= 0 ; row--){
                         if(matrix[row][column].getVisibility() == View.VISIBLE) {
                             matrix[row][column].setVisibility(ImageView.INVISIBLE);
@@ -101,20 +102,19 @@ public class MainActivity extends AppCompatActivity {
                 endGame = gameManager.endGame();
 
                 if(hit){
-                    Obstacle_Near_Player = matrix[playerIndex][MAX_ROW].getDrawable().getConstantState();
-
-                    if(Obstacle_Near_Player.equals(Obstacle_Coin)){
-                        addHeart(life);
-                        gameManager.addHeartFromManager();
-                    }
-                    else {
+//                    Obstacle_Near_Player = matrix[playerIndex][MAX_ROW].getDrawable().getConstantState();
+//                    if(Obstacle_Near_Player.equals(Obstacle_Coin)){
+//                        addHeart(life);
+//                        gameManager.addHeartFromManager();
+//                    }
+//                    else {
                         delHeart(life);
                         gameManager.delHeartFromManager();
                         vibrate();
                         if (gameManager.life > 0) {
                             messageOnHit();
                         }
-                    }
+//                    }
                 }
                 if(endGame){
                     messageOnEndGame();
