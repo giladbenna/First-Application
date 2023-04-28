@@ -7,7 +7,6 @@ import androidx.appcompat.widget.AppCompatImageView;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -44,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     Bitmap obstacleCoinBitmap;
     Drawable Obstacle_Coin;
     int obstacleCoinResId;
+    public boolean ifArrowsMode = false;
 
     public MainActivity() {
     }
@@ -54,6 +54,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        if(!ifArrowsMode){
+            findViewById(R.id.leftArrow).setVisibility(View.INVISIBLE);
+            findViewById(R.id.rightArrow).setVisibility(View.INVISIBLE);
+        }
 
         findViews();
         Obstacle_Coin = getResources().getDrawable(R.drawable.obstacle_coin);
@@ -85,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 ImageView Obstacle_Near_Player;
+                ImageView arrows;
                 handler_update_on_matrix.postDelayed(this, DELAY_UPDATE_OBS_ON_MATRIX); //Do it again in a second
                 playerIndex = gameManager.findWherePlayerIs(player_row);
                 ifHit = gameManager.checkIfHit(matrix[MAX_ROW][playerIndex]);
@@ -101,7 +106,10 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
 
-                ButtonLog();
+                if(ifArrowsMode)
+                    arrowButtonLogic();
+                else
+                    sensorLogic();
 
                 ifEndGame = gameManager.endGame();
 
@@ -168,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
         toast.show();
     }
 
-    private void ButtonLog() {
+    private void arrowButtonLogic() {
         Button leftButton = findViewById(R.id.leftArrow);
         Button rightButton = findViewById(R.id.rightArrow);
         leftButton.setOnClickListener(v -> {
@@ -215,6 +223,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    public void sensorLogic(){
+
+    }
 
     private void findViews() {
         main_IMG_background = findViewById(R.id.main_IMG_background);
