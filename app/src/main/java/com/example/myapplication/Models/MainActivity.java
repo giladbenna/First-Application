@@ -6,12 +6,14 @@ import androidx.appcompat.widget.AppCompatImageView;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -35,6 +37,9 @@ public class MainActivity extends AppCompatActivity {
     private final Handler handler_gen_obs = new Handler();
     private final Handler handler_update_on_matrix = new Handler();
     private final GameManager gameManager = new GameManager();
+
+    private final OpeningPage openingPage = new OpeningPage();
+
     private Runnable runnable_upd_mat;
     private Runnable runnable_gen_obs;
     int playerIndex = 0;
@@ -43,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
     Bitmap obstacleCoinBitmap;
     Drawable Obstacle_Coin;
     int obstacleCoinResId;
-    public boolean ifArrowsMode = false;
 
     public MainActivity() {
     }
@@ -54,9 +58,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if(!ifArrowsMode){
+        Intent intent = getIntent();
+        boolean isTrue = intent.getBooleanExtra("key", false); // or true
+        if(!isTrue){
+            sensorLogic();
             findViewById(R.id.leftArrow).setVisibility(View.INVISIBLE);
             findViewById(R.id.rightArrow).setVisibility(View.INVISIBLE);
+        }
+        else {
+            arrowButtonLogic();
         }
 
         findViews();
@@ -75,9 +85,9 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 handler_gen_obs.postDelayed(this, DELAY_GEN_OBS); //Do it again in a second
                 int rand = (int) (Math.random() * MAX_ROW);
-                //int rand2 = (int) (Math.random() * 4);
+                int rand2 = (int) (Math.random() * 4);
                 matrix[0][rand].setVisibility(View.VISIBLE);
-                matrix[0][rand].setImageResource(imageObs[3]);
+                matrix[0][rand].setImageResource(imageObs[rand2]);
             }
         };
         handler_gen_obs.postDelayed(runnable_gen_obs, 100); //Do it again in a second
@@ -89,7 +99,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 ImageView Obstacle_Near_Player;
-                ImageView arrows;
                 handler_update_on_matrix.postDelayed(this, DELAY_UPDATE_OBS_ON_MATRIX); //Do it again in a second
                 playerIndex = gameManager.findWherePlayerIs(player_row);
                 ifHit = gameManager.checkIfHit(matrix[MAX_ROW][playerIndex]);
@@ -105,11 +114,6 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 }
-
-                if(ifArrowsMode)
-                    arrowButtonLogic();
-                else
-                    sensorLogic();
 
                 ifEndGame = gameManager.endGame();
 
