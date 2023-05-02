@@ -3,7 +3,9 @@ import android.view.View;
 import android.widget.ImageView;
 
 public class GameManager {
-    public int life = 11;
+    public int life = 3;
+    public int odometerScore = 0;
+
     public boolean checkIfHit(ImageView obs){
         return obs.getVisibility() == View.VISIBLE;
     }
@@ -12,7 +14,7 @@ public class GameManager {
         life--;
     }
     public void addHeartFromManager(){
-        if(life < 11)
+        if(life < 3)
             life++;
     }
     public boolean endGame(){
@@ -30,6 +32,9 @@ public class GameManager {
     public boolean isCoin(){
 
         return false;
+    }
+    public int getOdometerScore(){
+        return odometerScore;
     }
 
 }

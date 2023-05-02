@@ -1,4 +1,4 @@
-package com.example.myapplication.Models;
+package com.example.myapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
@@ -9,19 +9,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.myapplication.Logic.GameManager;
-import com.example.myapplication.R;
 import com.google.android.material.imageview.ShapeableImageView;
 
 public class MainActivity extends AppCompatActivity {
@@ -34,25 +34,28 @@ public class MainActivity extends AppCompatActivity {
     private ImageView[] player_row;
     private final int DELAY_GEN_OBS = 2000;
     private final int DELAY_UPDATE_OBS_ON_MATRIX = 1000;
+    private final int DELAY_ODOMETER = 100;
     private final Handler handler_gen_obs = new Handler();
     private final Handler handler_update_on_matrix = new Handler();
+    private final Handler handler_odometer = new Handler();
     private final GameManager gameManager = new GameManager();
-
-    private final OpeningPage openingPage = new OpeningPage();
-
     private Runnable runnable_upd_mat;
     private Runnable runnable_gen_obs;
+    private Runnable runnable_odometer;
+
     int playerIndex = 0;
     boolean ifHit = false;
     boolean ifEndGame = false;
     Bitmap obstacleCoinBitmap;
     Drawable Obstacle_Coin;
-    int obstacleCoinResId;
+    TextView odometerScore ;
+
+    private MediaPlayer crashSound;
+
 
     public MainActivity() {
     }
 
-    @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,6 +79,8 @@ public class MainActivity extends AppCompatActivity {
         // generate new obs
         generatingObstacles();
         moveObstacle();
+        calcOdometer();
+        crashSound = MediaPlayer.create(MainActivity.this, R.raw.opening_sound);
         Glide.with(this).load(R.drawable.pokemon_background_forest).centerCrop().into(main_IMG_background);
     }
 
@@ -118,6 +123,7 @@ public class MainActivity extends AppCompatActivity {
                 ifEndGame = gameManager.endGame();
 
                 if (ifHit) {
+                    crashSound = MediaPlayer.create(MainActivity.this, R.raw.crash_sound);
                     Obstacle_Near_Player = matrix[MAX_ROW][playerIndex];
                     //int obstacleNearPlayerResId = Obstacle_Near_Player.getConstantState().;
                     if (Obstacle_Near_Player.getDrawable().getConstantState().equals(Obstacle_Coin.getConstantState())) {
@@ -135,15 +141,29 @@ public class MainActivity extends AppCompatActivity {
                 if (ifEndGame) {
                     messageOnEndGame();
                     stopRunnable();
+                    Intent intent = new Intent(MainActivity.this, ScoreBoardActivity.class);
+                    startActivity(intent);
                 }
             }
         };
         handler_update_on_matrix.postDelayed(runnable_upd_mat, DELAY_UPDATE_OBS_ON_MATRIX); //Do it again in a second
     }
+    private void calcOdometer(){
+        runnable_odometer = new Runnable() {
+            @Override
+            public void run() {
+                handler_odometer.postDelayed(this, DELAY_ODOMETER); //Do it again in a second
+                gameManager.odometerScore++;
+                odometerScore.setText(String.valueOf(gameManager.getOdometerScore()));
+            }
+        };
+        handler_odometer.postDelayed(runnable_odometer, DELAY_ODOMETER); //Do it again in a second
 
+    }
     private void stopRunnable() {
         handler_update_on_matrix.removeCallbacks(runnable_upd_mat);
         handler_gen_obs.removeCallbacks(runnable_gen_obs);
+        handler_odometer.removeCallbacks((runnable_odometer));
     }
 
     private void vibrate() {
@@ -293,6 +313,8 @@ public class MainActivity extends AppCompatActivity {
                 R.drawable.balbazor,
                 R.drawable.squritel,
                 R.drawable.obstacle_coin};
+
+        odometerScore = findViewById(R.id.odometerScore);
 
     }
 

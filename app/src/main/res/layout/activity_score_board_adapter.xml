@@ -3,14 +3,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ScoreBoardPage">
+    tools:context=".ScoreBoardActivity">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/main_LST_scores"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerInParent="true"
+        android:layout_width="400dp"
+        android:layout_height="500dp"
         tools:listitem="@layout/score_item" />
+
+
+    <LinearLayout
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="26dp"
+        >
+
+        <Button
+            android:id="@+id/returnButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Opening Page"
+            android:layout_gravity="center" />
+
+
+
+    </LinearLayout>
+
 
 
 

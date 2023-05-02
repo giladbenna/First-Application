@@ -39,7 +39,7 @@ public class ScoreBoardAdapter extends RecyclerView.Adapter<ScoreBoardAdapter.It
     @Override
     public void onBindViewHolder(@NonNull ScoreBoardAdapter.ItemViewHolder holder, int position) {
         ScoreItem scoreItem = getItem(position);
-        holder.score.setText(scoreItem.getScore());
+        holder.score.setText(""+scoreItem.getScore());
         holder.name.setText(scoreItem.getName());
 //        ImageLoader.getInstance().loadImage(scoreItem.getImage(), holder.player_IMG_icon);
 

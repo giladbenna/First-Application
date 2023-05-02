@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Models.MainActivity"
+    tools:context=".MainActivity"
     android:contentDescription="@null">
     <!--    android:background="@color/purple_700">-->
 
@@ -42,6 +42,22 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             app:srcCompat="@drawable/redheart" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/lifeBar"
+        android:layout_above="@id/matLayout">
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/odometerScore"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="100dp"
+            android:text="000"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
     </LinearLayout>
 
     <LinearLayout
