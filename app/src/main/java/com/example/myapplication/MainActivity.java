@@ -80,7 +80,8 @@ public class MainActivity extends AppCompatActivity {
         generatingObstacles();
         moveObstacle();
         calcOdometer();
-        crashSound = MediaPlayer.create(MainActivity.this, R.raw.opening_sound);
+        crashSound = MediaPlayer.create(this, R.raw.opening_sound);
+        crashSound.start();
         Glide.with(this).load(R.drawable.pokemon_background_forest).centerCrop().into(main_IMG_background);
     }
 
@@ -124,6 +125,7 @@ public class MainActivity extends AppCompatActivity {
 
                 if (ifHit) {
                     crashSound = MediaPlayer.create(MainActivity.this, R.raw.crash_sound);
+                    crashSound.start();
                     Obstacle_Near_Player = matrix[MAX_ROW][playerIndex];
                     //int obstacleNearPlayerResId = Obstacle_Near_Player.getConstantState().;
                     if (Obstacle_Near_Player.getDrawable().getConstantState().equals(Obstacle_Coin.getConstantState())) {
@@ -160,6 +162,11 @@ public class MainActivity extends AppCompatActivity {
         handler_odometer.postDelayed(runnable_odometer, DELAY_ODOMETER); //Do it again in a second
 
     }
+//    protected void onPause() {
+//
+//        super.onPause();
+//        stopRunnable();
+//    }
     private void stopRunnable() {
         handler_update_on_matrix.removeCallbacks(runnable_upd_mat);
         handler_gen_obs.removeCallbacks(runnable_gen_obs);
