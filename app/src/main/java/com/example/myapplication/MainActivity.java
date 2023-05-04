@@ -174,6 +174,7 @@ public class MainActivity extends AppCompatActivity {
         stopRunnable();
         stepDetector.stop();
     }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -250,7 +251,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void playerMovementLogicLeft(ImageView[] player_row){
+    private void playerMovementLogicLeft(ImageView[] player_row) {
         if (player_row[0].getVisibility() == View.VISIBLE) {
             player_row[0].setVisibility(View.VISIBLE);
         }
@@ -272,7 +273,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void playerMovementLogicRight(ImageView[] player_row){
+    private void playerMovementLogicRight(ImageView[] player_row) {
         if (player_row[4].getVisibility() == View.VISIBLE) {
             player_row[4].setVisibility(View.VISIBLE);
         }

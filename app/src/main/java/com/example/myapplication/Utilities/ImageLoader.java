@@ -20,13 +20,13 @@ public class ImageLoader {
         return instance;
     }
 
-    public static ImageLoader initImageLoader(Context context){
+    public static ImageLoader initImageLoader(Context context) {
         if (instance == null)
             instance = new ImageLoader(context);
         return instance;
     }
 
-    public void loadImage(String imageURL, ImageView imageView){
+    public void loadImage(String imageURL, ImageView imageView) {
         Glide
                 .with(appContext)
                 .load(imageURL)
@@ -34,7 +34,7 @@ public class ImageLoader {
                 .into(imageView);
     }
 
-    public void loadImage(Drawable drawable, ImageView imageView){
+    public void loadImage(Drawable drawable, ImageView imageView) {
         Glide
                 .with(appContext)
                 .load(drawable)

@@ -50,7 +50,7 @@ public class StepDetector {
                 if (stepCallback != null)
                     stepCallback.stepYRight();
             }
-            if(y < 10.0){
+            if (y < 10.0) {
                 if (stepCallback != null)
                     stepCallback.stepYLeft();
             }

@@ -10,18 +10,20 @@ public class GameManager {
     public int life = 3;
     public int odometerScore = 0;
 
-    public boolean checkIfHit(ImageView obs){
+    public boolean checkIfHit(ImageView obs) {
         return obs.getVisibility() == View.VISIBLE;
     }
 
-    public void delHeartFromManager(){
+    public void delHeartFromManager() {
         life--;
     }
-    public void addHeartFromManager(){
-        if(life < 3)
+
+    public void addHeartFromManager() {
+        if (life < 3)
             life++;
     }
-    public boolean endGame(){
+
+    public boolean endGame() {
         return life == 0;
     }
 
@@ -34,12 +36,12 @@ public class GameManager {
         return -1;
     }
 
-    public int getOdometerScore(){
+    public int getOdometerScore() {
         return odometerScore;
     }
 
-    public boolean ifCoin(Drawable coin, Drawable X){
-           return coin.getConstantState().equals(X.getConstantState());
+    public boolean ifCoin(Drawable coin, Drawable X) {
+        return coin.getConstantState().equals(X.getConstantState());
     }
 
 }
