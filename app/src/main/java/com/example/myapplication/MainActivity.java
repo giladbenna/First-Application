@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Intent intent = getIntent();
-        boolean ifArrows = intent.getBooleanExtra("key", false); // or true
+        ifArrows = intent.getBooleanExtra("key", false); // or true
         boolean isSlow = intent.getBooleanExtra("slow", false); // or true
 
         if (!ifArrows) {
