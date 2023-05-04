@@ -21,7 +21,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.myapplication.Interfaces.StepCallback;
 import com.example.myapplication.Logic.GameManager;
+import com.example.myapplication.Utilities.StepDetector;
 import com.google.android.material.imageview.ShapeableImageView;
 
 public class MainActivity extends AppCompatActivity {
@@ -48,7 +50,9 @@ public class MainActivity extends AppCompatActivity {
     boolean ifEndGame = false;
     Bitmap obstacleCoinBitmap;
     Drawable Obstacle_Coin;
-    TextView odometerScore ;
+    TextView odometerScore;
+
+    private StepDetector stepDetector;
 
     private MediaPlayer crashSound;
 
@@ -63,17 +67,15 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         boolean isTrue = intent.getBooleanExtra("key", false); // or true
-        if(!isTrue){
+        if (!isTrue) {
             sensorLogic();
             findViewById(R.id.leftArrow).setVisibility(View.INVISIBLE);
             findViewById(R.id.rightArrow).setVisibility(View.INVISIBLE);
-        }
-        else {
+        } else {
             arrowButtonLogic();
         }
-
-        findViews();
         Obstacle_Coin = getResources().getDrawable(R.drawable.obstacle_coin);
+        findViews();
 //        obstacleCoinBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.obstacle_coin);
 //        obstacleCoinResId = R.drawable.obstacle_coin;
         // generate new obs
@@ -104,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
         runnable_upd_mat = new Runnable() {
             @Override
             public void run() {
-                ImageView Obstacle_Near_Player;
+                Drawable Obstacle_Near_Player;
                 handler_update_on_matrix.postDelayed(this, DELAY_UPDATE_OBS_ON_MATRIX); //Do it again in a second
                 playerIndex = gameManager.findWherePlayerIs(player_row);
                 ifHit = gameManager.checkIfHit(matrix[MAX_ROW][playerIndex]);
@@ -121,14 +123,15 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
 
-                ifEndGame = gameManager.endGame();
 
+                ifEndGame = gameManager.endGame();
                 if (ifHit) {
+                    Obstacle_Near_Player = matrix[MAX_ROW][playerIndex].getDrawable();
+
                     crashSound = MediaPlayer.create(MainActivity.this, R.raw.crash_sound);
                     crashSound.start();
-                    Obstacle_Near_Player = matrix[MAX_ROW][playerIndex];
-                    //int obstacleNearPlayerResId = Obstacle_Near_Player.getConstantState().;
-                    if (Obstacle_Near_Player.getDrawable().getConstantState().equals(Obstacle_Coin.getConstantState())) {
+
+                    if (gameManager.ifCoin(Obstacle_Coin, Obstacle_Near_Player)) {
                         addHeart(life);
                         gameManager.addHeartFromManager();
                     } else {
@@ -150,7 +153,8 @@ public class MainActivity extends AppCompatActivity {
         };
         handler_update_on_matrix.postDelayed(runnable_upd_mat, DELAY_UPDATE_OBS_ON_MATRIX); //Do it again in a second
     }
-    private void calcOdometer(){
+
+    private void calcOdometer() {
         runnable_odometer = new Runnable() {
             @Override
             public void run() {
@@ -162,15 +166,27 @@ public class MainActivity extends AppCompatActivity {
         handler_odometer.postDelayed(runnable_odometer, DELAY_ODOMETER); //Do it again in a second
 
     }
-//    protected void onPause() {
-//
-//        super.onPause();
-//        stopRunnable();
-//    }
+
+    protected void onPause() {
+
+        super.onPause();
+        stopRunnable();
+    }
+
+    protected void onResume() {
+        super.onResume();
+        runnable_upd_mat.run();
+        runnable_gen_obs.run();
+        runnable_odometer.run();
+        stepDetector.start();
+    }
+
     private void stopRunnable() {
         handler_update_on_matrix.removeCallbacks(runnable_upd_mat);
         handler_gen_obs.removeCallbacks(runnable_gen_obs);
         handler_odometer.removeCallbacks((runnable_odometer));
+        stepDetector.stop();
+
     }
 
     private void vibrate() {
@@ -180,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void delHeart(ShapeableImageView[] hearts) {
-        for (int i = 0; i < 3; i++) {
+        for (int i = 2; i >= 0; i--) {
             if (hearts[i].getVisibility() == View.VISIBLE) {
                 hearts[i].setVisibility(ShapeableImageView.INVISIBLE);
                 break;
@@ -189,7 +205,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addHeart(ShapeableImageView[] hearts) {
-        for (int i = 3; i > 0; i--) {
+        for (int i = 0; i < 3; i++) {
             if (hearts[i].getVisibility() == View.VISIBLE) {
                 hearts[i].setVisibility(ShapeableImageView.INVISIBLE);
                 break;
@@ -210,53 +226,73 @@ public class MainActivity extends AppCompatActivity {
     private void arrowButtonLogic() {
         Button leftButton = findViewById(R.id.leftArrow);
         Button rightButton = findViewById(R.id.rightArrow);
+
         leftButton.setOnClickListener(v -> {
-            if (player_row[0].getVisibility() == View.VISIBLE) {
-                player_row[0].setVisibility(View.VISIBLE);
-            }
-            if (player_row[1].getVisibility() == View.VISIBLE) {
-                player_row[1].setVisibility(View.INVISIBLE);
-                player_row[0].setVisibility(View.VISIBLE);
-            }
-            if (player_row[2].getVisibility() == View.VISIBLE) {
-                player_row[2].setVisibility(View.INVISIBLE);
-                player_row[1].setVisibility(View.VISIBLE);
-            }
-            if (player_row[3].getVisibility() == View.VISIBLE) {
-                player_row[3].setVisibility(View.INVISIBLE);
-                player_row[2].setVisibility(View.VISIBLE);
-            }
-            if (player_row[4].getVisibility() == View.VISIBLE) {
-                player_row[4].setVisibility(View.INVISIBLE);
-                player_row[3].setVisibility(View.VISIBLE);
-            }
+            playerMovementLogicLeft(player_row);
         });
         rightButton.setOnClickListener(v -> {
-            if (player_row[4].getVisibility() == View.VISIBLE) {
-                player_row[4].setVisibility(View.VISIBLE);
+            playerMovementLogicRight(player_row);
+        });
+    }
+
+    private void sensorLogic() {
+        stepDetector = new StepDetector(this, new StepCallback() {
+            @Override
+            public void stepXRight() {
+                playerMovementLogicLeft(player_row);
             }
-            if (player_row[3].getVisibility() == View.VISIBLE) {
-                player_row[3].setVisibility(View.INVISIBLE);
-                player_row[4].setVisibility(View.VISIBLE);
-            }
-            if (player_row[2].getVisibility() == View.VISIBLE) {
-                player_row[2].setVisibility(View.INVISIBLE);
-                player_row[3].setVisibility(View.VISIBLE);
-            }
-            if (player_row[1].getVisibility() == View.VISIBLE) {
-                player_row[1].setVisibility(View.INVISIBLE);
-                player_row[2].setVisibility(View.VISIBLE);
-            }
-            if (player_row[0].getVisibility() == View.VISIBLE) {
-                player_row[0].setVisibility(View.INVISIBLE);
-                player_row[1].setVisibility(View.VISIBLE);
+
+            @Override
+            public void stepXLeft() {
+                playerMovementLogicRight(player_row);
             }
         });
     }
 
-    public void sensorLogic(){
-
+    private void playerMovementLogicLeft(ImageView[] player_row){
+        if (player_row[0].getVisibility() == View.VISIBLE) {
+            player_row[0].setVisibility(View.VISIBLE);
+        }
+        if (player_row[1].getVisibility() == View.VISIBLE) {
+            player_row[1].setVisibility(View.INVISIBLE);
+            player_row[0].setVisibility(View.VISIBLE);
+        }
+        if (player_row[2].getVisibility() == View.VISIBLE) {
+            player_row[2].setVisibility(View.INVISIBLE);
+            player_row[1].setVisibility(View.VISIBLE);
+        }
+        if (player_row[3].getVisibility() == View.VISIBLE) {
+            player_row[3].setVisibility(View.INVISIBLE);
+            player_row[2].setVisibility(View.VISIBLE);
+        }
+        if (player_row[4].getVisibility() == View.VISIBLE) {
+            player_row[4].setVisibility(View.INVISIBLE);
+            player_row[3].setVisibility(View.VISIBLE);
+        }
     }
+
+    private void playerMovementLogicRight(ImageView[] player_row){
+        if (player_row[4].getVisibility() == View.VISIBLE) {
+            player_row[4].setVisibility(View.VISIBLE);
+        }
+        if (player_row[3].getVisibility() == View.VISIBLE) {
+            player_row[3].setVisibility(View.INVISIBLE);
+            player_row[4].setVisibility(View.VISIBLE);
+        }
+        if (player_row[2].getVisibility() == View.VISIBLE) {
+            player_row[2].setVisibility(View.INVISIBLE);
+            player_row[3].setVisibility(View.VISIBLE);
+        }
+        if (player_row[1].getVisibility() == View.VISIBLE) {
+            player_row[1].setVisibility(View.INVISIBLE);
+            player_row[2].setVisibility(View.VISIBLE);
+        }
+        if (player_row[0].getVisibility() == View.VISIBLE) {
+            player_row[0].setVisibility(View.INVISIBLE);
+            player_row[1].setVisibility(View.VISIBLE);
+        }
+    }
+
 
     private void findViews() {
         main_IMG_background = findViewById(R.id.main_IMG_background);

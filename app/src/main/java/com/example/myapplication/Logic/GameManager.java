@@ -1,6 +1,10 @@
 package com.example.myapplication.Logic;
+
+import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.ImageView;
+
+import com.example.myapplication.R;
 
 public class GameManager {
     public int life = 3;
@@ -35,6 +39,10 @@ public class GameManager {
     }
     public int getOdometerScore(){
         return odometerScore;
+    }
+
+    public boolean ifCoin(Drawable coin, Drawable X){
+           return coin.getConstantState().equals(X.getConstantState());
     }
 
 }
