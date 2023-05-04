@@ -17,11 +17,21 @@ public class OpeningPage extends AppCompatActivity {
     }
 
     private void Buttons(){
-        Button arrowModeButton = findViewById(R.id.arrowModeButton);
+        Button arrowModeButtonSlow = findViewById(R.id.arrowModeButtonSlow);
 
-        arrowModeButton.setOnClickListener(v -> {
+        arrowModeButtonSlow.setOnClickListener(v -> {
             Intent intent = new Intent(OpeningPage.this, MainActivity.class);
             intent.putExtra("key", true);
+            intent.putExtra("slow", true);
+            startActivity(intent);
+        });
+
+        Button arrowModeButtonFast = findViewById(R.id.arrowModeButtonFast);
+
+        arrowModeButtonFast.setOnClickListener(v -> {
+            Intent intent = new Intent(OpeningPage.this, MainActivity.class);
+            intent.putExtra("key", true);
+            intent.putExtra("slow", false);
             startActivity(intent);
         });
 

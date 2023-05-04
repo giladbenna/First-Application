@@ -7,30 +7,86 @@
     tools:context=".OpeningPage">
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/game_logo"
-        android:layout_marginTop="175dp"/>
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="center"
+        android:src="@drawable/background_opening_page" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/startMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Welcome to My Game"
+        android:text="Welcome to The Game"
         android:textSize="24sp"
         android:textStyle="bold"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        android:textColor="@android:color/black"
+        android:textAlignment="center"
+        android:lineSpacingExtra="8dp"
+        android:letterSpacing="0.1"
+        android:shadowColor="@android:color/white"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="1"/>
+
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/arrowMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Start Game With Arrows"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_marginTop="60dp"
+        android:layout_centerHorizontal="true"
+        android:textColor="@android:color/black"
+        android:textAlignment="center"
+        android:lineSpacingExtra="8dp"
+        android:letterSpacing="0.1"
+        android:shadowColor="@android:color/white"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="1"/>
+
+    <Button
+        android:id="@+id/arrowModeButtonSlow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hard Mode (Fast)"
+        android:layout_gravity="center"
+        android:layout_below="@id/arrowMessage"
         android:layout_marginTop="20dp"
         android:layout_centerHorizontal="true"/>
 
     <Button
-        android:id="@+id/arrowModeButton"
+        android:id="@+id/arrowModeButtonFast"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/start_game_with_arrows"
+        android:text="Easy Mode (Slow)"
         android:layout_gravity="center"
-        android:layout_below="@id/startMessage"
-        android:layout_marginTop="50dp"
+        android:layout_below="@id/arrowModeButtonSlow"
+        android:layout_marginTop="10dp"
         android:layout_centerHorizontal="true"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/Or"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Or"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/arrowModeButtonFast"
+        android:layout_centerHorizontal="true"
+        android:textColor="@android:color/black"
+        android:textAlignment="center"
+        android:lineSpacingExtra="8dp"
+        android:letterSpacing="0.1"
+        android:shadowColor="@android:color/white"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="1"/>
 
     <Button
         android:id="@+id/sensorModeButton"
@@ -38,8 +94,8 @@
         android:layout_height="wrap_content"
         android:text="@string/start_game_with_sensors"
         android:layout_gravity="center"
-        android:layout_below="@id/arrowModeButton"
-        android:layout_marginTop="30dp"
+        android:layout_below="@id/Or"
+        android:layout_marginTop="20dp"
         android:layout_centerHorizontal="true"/>
 
     <Button

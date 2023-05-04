@@ -34,8 +34,8 @@ public class MainActivity extends AppCompatActivity {
     private final int MAX_ROW = 5;
     private final int MAX_COLUMN = 4;
     private ImageView[] player_row;
-    private final int DELAY_GEN_OBS = 4000;
-    private final int DELAY_UPDATE_OBS_ON_MATRIX = 1000;
+    private int DELAY_GEN_OBS = 4000;
+    private int DELAY_UPDATE_OBS_ON_MATRIX = 1000;
     private final int DELAY_ODOMETER = 100;
     private final Handler handler_gen_obs = new Handler();
     private final Handler handler_update_on_matrix = new Handler();
@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
     int playerIndex = 0;
     boolean ifHit = false;
     boolean ifEndGame = false;
-    Bitmap obstacleCoinBitmap;
+    boolean ifArrows = false;
     Drawable Obstacle_Coin;
     TextView odometerScore;
 
@@ -66,12 +66,18 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Intent intent = getIntent();
-        boolean isTrue = intent.getBooleanExtra("key", false); // or true
-        if (!isTrue) {
+        boolean ifArrows = intent.getBooleanExtra("key", false); // or true
+        boolean isSlow = intent.getBooleanExtra("slow", false); // or true
+
+        if (!ifArrows) {
             sensorLogic();
             findViewById(R.id.leftArrow).setVisibility(View.INVISIBLE);
             findViewById(R.id.rightArrow).setVisibility(View.INVISIBLE);
         } else {
+            if(!isSlow){
+                DELAY_GEN_OBS = 2000;
+                DELAY_UPDATE_OBS_ON_MATRIX = 800;
+            }
             arrowButtonLogic();
         }
         Obstacle_Coin = getResources().getDrawable(R.drawable.obstacle_coin);
@@ -123,7 +129,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
 
-
                 ifEndGame = gameManager.endGame();
                 if (ifHit) {
                     Obstacle_Near_Player = matrix[MAX_ROW][playerIndex].getDrawable();
@@ -172,13 +177,15 @@ public class MainActivity extends AppCompatActivity {
 
         super.onPause();
         stopRunnable();
-        stepDetector.stop();
+        if(!ifArrows)
+            stepDetector.stop();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        stepDetector.start();
+        if(!ifArrows)
+            stepDetector.start();
 //        runnable_upd_mat.run();
 //        runnable_gen_obs.run();
 //        runnable_odometer.run();

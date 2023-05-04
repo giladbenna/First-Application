@@ -39,7 +39,7 @@ public class ScoreBoardAdapter extends RecyclerView.Adapter<ScoreBoardAdapter.It
     @Override
     public void onBindViewHolder(@NonNull ScoreBoardAdapter.ItemViewHolder holder, int position) {
         ScoreItem scoreItem = getItem(position);
-        holder.score.setText("" + scoreItem.getScore());
+        holder.score.setText(String.valueOf(scoreItem.getScore()));
         holder.name.setText(scoreItem.getName());
 //        ImageLoader.getInstance().loadImage(scoreItem.getImage(), holder.player_IMG_icon);
 
@@ -55,13 +55,12 @@ public class ScoreBoardAdapter extends RecyclerView.Adapter<ScoreBoardAdapter.It
     }
 
     public class ItemViewHolder extends RecyclerView.ViewHolder {
-        private ShapeableImageView player_IMG_icon;
         private MaterialTextView score;
         private MaterialTextView name;
 
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
-            player_IMG_icon = itemView.findViewById(R.id.player_IMG_icon);
+            ShapeableImageView player_IMG_icon = itemView.findViewById(R.id.player_IMG_icon);
             score = itemView.findViewById(R.id.score);
             name = itemView.findViewById(R.id.player_Name);
         }
