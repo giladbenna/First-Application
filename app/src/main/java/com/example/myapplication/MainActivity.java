@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private final int MAX_ROW = 5;
     private final int MAX_COLUMN = 4;
     private ImageView[] player_row;
-    private final int DELAY_GEN_OBS = 2000;
+    private final int DELAY_GEN_OBS = 4000;
     private final int DELAY_UPDATE_OBS_ON_MATRIX = 1000;
     private final int DELAY_ODOMETER = 100;
     private final Handler handler_gen_obs = new Handler();
@@ -167,25 +167,26 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
     protected void onPause() {
 
         super.onPause();
         stopRunnable();
+        stepDetector.stop();
     }
-
+    @Override
     protected void onResume() {
         super.onResume();
-        runnable_upd_mat.run();
-        runnable_gen_obs.run();
-        runnable_odometer.run();
         stepDetector.start();
+//        runnable_upd_mat.run();
+//        runnable_gen_obs.run();
+//        runnable_odometer.run();
     }
 
     private void stopRunnable() {
         handler_update_on_matrix.removeCallbacks(runnable_upd_mat);
         handler_gen_obs.removeCallbacks(runnable_gen_obs);
         handler_odometer.removeCallbacks((runnable_odometer));
-        stepDetector.stop();
 
     }
 
@@ -238,13 +239,13 @@ public class MainActivity extends AppCompatActivity {
     private void sensorLogic() {
         stepDetector = new StepDetector(this, new StepCallback() {
             @Override
-            public void stepXRight() {
-                playerMovementLogicLeft(player_row);
+            public void stepYRight() {
+                playerMovementLogicRight(player_row);
             }
 
             @Override
-            public void stepXLeft() {
-                playerMovementLogicRight(player_row);
+            public void stepYLeft() {
+                playerMovementLogicLeft(player_row);
             }
         });
     }

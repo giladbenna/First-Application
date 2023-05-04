@@ -2,9 +2,9 @@ package com.example.myapplication.Interfaces;
 
 public interface StepCallback {
 
-    void stepXRight();
+    void stepYRight();
 
-    void stepXLeft();
+    void stepYLeft();
 
 }
 

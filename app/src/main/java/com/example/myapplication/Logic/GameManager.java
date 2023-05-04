@@ -33,10 +33,7 @@ public class GameManager {
         }
         return -1;
     }
-    public boolean isCoin(){
 
-        return false;
-    }
     public int getOdometerScore(){
         return odometerScore;
     }

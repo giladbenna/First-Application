@@ -31,10 +31,9 @@ public class StepDetector {
         sensorEventListener = new SensorEventListener() {
             @Override
             public void onSensorChanged(SensorEvent event) {
-                float x = event.values[0];
-                // float y = event.values[1];
+                float y = event.values[1];
 
-                calculateStep(x);
+                calculateStep(y);
             }
 
             @Override
@@ -44,16 +43,16 @@ public class StepDetector {
         };
     }
 
-    private void calculateStep(float x) {
+    private void calculateStep(float y) {
         if (System.currentTimeMillis() - timestamp > 1000) {
             timestamp = System.currentTimeMillis();
-            if (x > 10.0) {
+            if (y > 10.0) {
                 if (stepCallback != null)
-                    stepCallback.stepXRight();
+                    stepCallback.stepYRight();
             }
-            if(x < 10.0){
+            if(y < 10.0){
                 if (stepCallback != null)
-                    stepCallback.stepXLeft();
+                    stepCallback.stepYLeft();
             }
         }
     }
