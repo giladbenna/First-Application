@@ -22,7 +22,7 @@ public class OpeningPage extends AppCompatActivity {
         arrowModeButtonSlow.setOnClickListener(v -> {
             Intent intent = new Intent(OpeningPage.this, MainActivity.class);
             intent.putExtra("key", true);
-            intent.putExtra("slow", true);
+            intent.putExtra("fast", false);
             startActivity(intent);
         });
 
@@ -31,7 +31,7 @@ public class OpeningPage extends AppCompatActivity {
         arrowModeButtonFast.setOnClickListener(v -> {
             Intent intent = new Intent(OpeningPage.this, MainActivity.class);
             intent.putExtra("key", true);
-            intent.putExtra("slow", false);
+            intent.putExtra("fast", true);
             startActivity(intent);
         });
 

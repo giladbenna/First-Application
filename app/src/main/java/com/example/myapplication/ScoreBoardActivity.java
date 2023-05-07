@@ -24,6 +24,7 @@ public class ScoreBoardActivity extends AppCompatActivity {
         findViews();
         initViews();
         returnButton();
+
     }
 
 

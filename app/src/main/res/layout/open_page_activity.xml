@@ -53,21 +53,23 @@
         android:id="@+id/arrowModeButtonSlow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hard Mode (Fast)"
+        android:text="Easy Mode (Slow)"
         android:layout_gravity="center"
         android:layout_below="@id/arrowMessage"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_centerHorizontal="true"/>
 
     <Button
         android:id="@+id/arrowModeButtonFast"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Easy Mode (Slow)"
+        android:text="Hard Mode (Fast)"
         android:layout_gravity="center"
         android:layout_below="@id/arrowModeButtonSlow"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:layout_centerHorizontal="true"/>
+
+
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/Or"

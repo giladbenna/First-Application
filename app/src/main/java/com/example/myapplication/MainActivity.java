@@ -67,16 +67,16 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         ifArrows = intent.getBooleanExtra("key", false); // or true
-        boolean isSlow = intent.getBooleanExtra("slow", false); // or true
+        boolean isFast = intent.getBooleanExtra("fast", false); // or true
 
         if (!ifArrows) {
             sensorLogic();
             findViewById(R.id.leftArrow).setVisibility(View.INVISIBLE);
             findViewById(R.id.rightArrow).setVisibility(View.INVISIBLE);
         } else {
-            if(!isSlow){
-                DELAY_GEN_OBS = 2000;
-                DELAY_UPDATE_OBS_ON_MATRIX = 800;
+            if (isFast) {
+                DELAY_GEN_OBS = 500;
+                DELAY_UPDATE_OBS_ON_MATRIX = 500;
             }
             arrowButtonLogic();
         }
@@ -151,6 +151,9 @@ public class MainActivity extends AppCompatActivity {
                 if (ifEndGame) {
                     messageOnEndGame();
                     stopRunnable();
+                    if(gameManager.isNewRecord(gameManager.leaderBoard, gameManager.getOdometerScore())){
+                        // refresh RecyclerView
+                    }
                     Intent intent = new Intent(MainActivity.this, ScoreBoardActivity.class);
                     startActivity(intent);
                 }
@@ -177,14 +180,14 @@ public class MainActivity extends AppCompatActivity {
 
         super.onPause();
         stopRunnable();
-        if(!ifArrows)
+        if (!ifArrows)
             stepDetector.stop();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if(!ifArrows)
+        if (!ifArrows)
             stepDetector.start();
 //        runnable_upd_mat.run();
 //        runnable_gen_obs.run();
@@ -195,7 +198,6 @@ public class MainActivity extends AppCompatActivity {
         handler_update_on_matrix.removeCallbacks(runnable_upd_mat);
         handler_gen_obs.removeCallbacks(runnable_gen_obs);
         handler_odometer.removeCallbacks((runnable_odometer));
-
     }
 
     private void vibrate() {
