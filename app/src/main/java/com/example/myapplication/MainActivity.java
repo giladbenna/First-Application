@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView[] player_row;
     private int DELAY_GEN_OBS = 4000;
     private int DELAY_UPDATE_OBS_ON_MATRIX = 1000;
-    private final int DELAY_ODOMETER = 100;
+    private int DELAY_ODOMETER = 100;
     private final Handler handler_gen_obs = new Handler();
     private final Handler handler_update_on_matrix = new Handler();
     private final Handler handler_odometer = new Handler();
@@ -77,10 +77,11 @@ public class MainActivity extends AppCompatActivity {
             if (isFast) {
                 DELAY_GEN_OBS = 500;
                 DELAY_UPDATE_OBS_ON_MATRIX = 500;
+                DELAY_ODOMETER = 25;
             }
             arrowButtonLogic();
         }
-        Obstacle_Coin = getResources().getDrawable(R.drawable.obstacle_coin);
+        Obstacle_Coin = getDrawable(R.drawable.obstacle_coin);
         findViews();
 //        obstacleCoinBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.obstacle_coin);
 //        obstacleCoinResId = R.drawable.obstacle_coin;
