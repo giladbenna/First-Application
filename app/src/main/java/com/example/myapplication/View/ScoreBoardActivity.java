@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myapplication.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -9,7 +9,13 @@ import android.os.Bundle;
 import android.widget.Button;
 
 import com.example.myapplication.Adapters.ScoreBoardAdapter;
+import com.example.myapplication.Models.ScoreItem;
+import com.example.myapplication.R;
 import com.example.myapplication.Utilities.DataManager;
+
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class ScoreBoardActivity extends AppCompatActivity {
 
@@ -29,7 +35,7 @@ public class ScoreBoardActivity extends AppCompatActivity {
 
 
     private void initViews() {
-        ScoreBoardAdapter scoreBoardAdapterAdapter = new ScoreBoardAdapter(this, DataManager.getScores());
+        ScoreBoardAdapter scoreBoardAdapterAdapter = new ScoreBoardAdapter(this,DataManager.getInstance().readArrayScoresFromSP());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         main_LST_scores.setLayoutManager(linearLayoutManager);

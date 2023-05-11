@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myapplication.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,12 +6,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 
-public class OpeningPage extends AppCompatActivity {
+import com.example.myapplication.R;
 
+public class OpeningPage extends AppCompatActivity {
+    private String playerName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.open_page_activity);
+        playerName = getIntent().getStringExtra("playerName");
         Buttons();
 
     }
@@ -23,6 +26,7 @@ public class OpeningPage extends AppCompatActivity {
             Intent intent = new Intent(OpeningPage.this, MainActivity.class);
             intent.putExtra("key", true);
             intent.putExtra("fast", false);
+            intent.putExtra("playerName", playerName);
             startActivity(intent);
         });
 
@@ -32,6 +36,7 @@ public class OpeningPage extends AppCompatActivity {
             Intent intent = new Intent(OpeningPage.this, MainActivity.class);
             intent.putExtra("key", true);
             intent.putExtra("fast", true);
+            intent.putExtra("playerName", playerName);
             startActivity(intent);
         });
 
@@ -40,6 +45,7 @@ public class OpeningPage extends AppCompatActivity {
         sensorModeButton.setOnClickListener(v -> {
             Intent intent = new Intent(OpeningPage.this, MainActivity.class);
             intent.putExtra("key", false);
+            intent.putExtra("name", playerName);
             startActivity(intent);
         });
 

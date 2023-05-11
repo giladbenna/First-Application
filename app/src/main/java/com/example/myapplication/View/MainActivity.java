@@ -1,13 +1,11 @@
-package com.example.myapplication;
+package com.example.myapplication.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
 
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -16,6 +14,7 @@ import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,6 +22,9 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.myapplication.Interfaces.StepCallback;
 import com.example.myapplication.Logic.GameManager;
+import com.example.myapplication.Models.ScoreItem;
+import com.example.myapplication.R;
+import com.example.myapplication.Utilities.DataManager;
 import com.example.myapplication.Utilities.StepDetector;
 import com.google.android.material.imageview.ShapeableImageView;
 
@@ -51,10 +53,10 @@ public class MainActivity extends AppCompatActivity {
     boolean ifArrows = false;
     Drawable Obstacle_Coin;
     TextView odometerScore;
-
+    private ScoreItem newPlayer  = new ScoreItem();
     private StepDetector stepDetector;
-
     private MediaPlayer crashSound;
+    private String playerName;
 
 
     public MainActivity() {
@@ -64,10 +66,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        boolean isFast;
 
         Intent intent = getIntent();
         ifArrows = intent.getBooleanExtra("key", false); // or true
-        boolean isFast = intent.getBooleanExtra("fast", false); // or true
+        isFast = intent.getBooleanExtra("fast", false); // or true
+        playerName = intent.getStringExtra("playerName");
+
 
         if (!ifArrows) {
             sensorLogic();
@@ -152,9 +157,9 @@ public class MainActivity extends AppCompatActivity {
                 if (ifEndGame) {
                     messageOnEndGame();
                     stopRunnable();
-                    if(gameManager.isNewRecord(gameManager.leaderBoard, gameManager.getOdometerScore())){
-                        // refresh RecyclerView
-                    }
+                    newPlayer.setScore(gameManager.getOdometerScore());
+                    newPlayer.setName(playerName);
+                    DataManager.getInstance().writeScoreToLeaderBoardSP(newPlayer); // checks if new score and write if so
                     Intent intent = new Intent(MainActivity.this, ScoreBoardActivity.class);
                     startActivity(intent);
                 }

@@ -4,4 +4,14 @@
     <string name="rightarrow">rightArrow</string>
     <string name="start_game_with_sensors">Start Game With Sensors</string>
     <string name="start_game_with_arrows">Start Game With Arrows</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="enter_your_name">Enter your name</string>
 </resources>

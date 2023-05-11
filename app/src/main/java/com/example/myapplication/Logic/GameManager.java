@@ -13,8 +13,6 @@ import java.util.Arrays;
 public class GameManager {
     public int life = 3;
     public int odometerScore = 0;
-    final int MAX_LEN_SCOREBOARD = 10;
-    public ScoreItem[] leaderBoard = new ScoreItem[MAX_LEN_SCOREBOARD];
 
     public boolean checkIfHit(ImageView obs) {
         return obs.getVisibility() == View.VISIBLE;
@@ -49,11 +47,7 @@ public class GameManager {
     public boolean ifCoin(Drawable coin, Drawable X) {
         return coin.getConstantState().equals(X.getConstantState());
     }
-    public boolean isNewRecord(ScoreItem[] array_leader_board,int newRec){// insert into the array if its in the top 10 and return true or false
-            if(newRec > array_leader_board[MAX_LEN_SCOREBOARD-1].getScore()) {
-                //array_leader_board[MAX_LEN_SCOREBOARD - 1] = newRec;
-            }
-            Arrays.sort(array_leader_board);
-        return newRec > array_leader_board[MAX_LEN_SCOREBOARD-1].getScore();
-    }
+
+
+
 }
