@@ -72,7 +72,7 @@ public class DataManager {
         leaderBoard.add(newRec);
 
         Collections.sort(leaderBoard, new ScoreItemComparator());
-//      String delete = new Gson().toJson(new ArrayList<>());
+//        String delete = new Gson().toJson(new ArrayList<>());
         String scores_json = new Gson().toJson(leaderBoard);
         putString("array", scores_json);
     }

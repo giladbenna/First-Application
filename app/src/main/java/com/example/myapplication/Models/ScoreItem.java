@@ -1,10 +1,13 @@
 package com.example.myapplication.Models;
 
+import com.google.android.gms.maps.model.LatLng;
+
 public class ScoreItem {
 
     private int score;
     private String name = "";
     private String image = "";
+    private LatLng latLng;
 
     public ScoreItem(){}
 
@@ -14,6 +17,14 @@ public class ScoreItem {
 
     public ScoreItem setName(String name) {
         this.name = name;
+        return this;
+    }
+    public LatLng getLatLng() {
+        return latLng;
+    }
+
+    public ScoreItem setLatLng(LatLng latLng) {
+        this.latLng = latLng;
         return this;
     }
 

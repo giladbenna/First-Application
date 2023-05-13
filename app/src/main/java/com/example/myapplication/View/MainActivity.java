@@ -7,6 +7,7 @@ import androidx.appcompat.widget.AppCompatImageView;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
@@ -26,6 +27,7 @@ import com.example.myapplication.Models.ScoreItem;
 import com.example.myapplication.R;
 import com.example.myapplication.Utilities.DataManager;
 import com.example.myapplication.Utilities.StepDetector;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.imageview.ShapeableImageView;
 
 public class MainActivity extends AppCompatActivity {
@@ -57,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
     private StepDetector stepDetector;
     private MediaPlayer crashSound;
     private String playerName;
+    private Location location;
     private  boolean isFast = false;
 
     public MainActivity() {
@@ -72,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
         ifArrows = intent.getBooleanExtra("key", false); // or true
         isFast = intent.getBooleanExtra("fast", false); // or true
         playerName = intent.getStringExtra("playerName");
+        location = getIntent().getParcelableExtra("location");
 
 
         if (!ifArrows) {
@@ -159,11 +163,13 @@ public class MainActivity extends AppCompatActivity {
                     stopRunnable();
                     newPlayer.setScore(gameManager.getOdometerScore());
                     newPlayer.setName(playerName);
+                    newPlayer.setLatLng(new LatLng(location.getLatitude(),location.getLongitude()));
                     DataManager.getInstance().writeScoreToLeaderBoardSP(newPlayer); // checks if new score and write if so
                     Intent intent = new Intent(MainActivity.this, ScoreBoardActivity.class);
                     intent.putExtra("playerName", playerName);
                     intent.putExtra("key", ifArrows);
                     intent.putExtra("fast", isFast);
+                    intent.putExtra("location", location);
                     startActivity(intent);
                 }
             }

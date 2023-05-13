@@ -10,10 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.myapplication.MapsFragment;
 import com.example.myapplication.Models.ScoreItem;
 import com.example.myapplication.R;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textview.MaterialTextView;
 
@@ -23,6 +21,8 @@ public class ScoreBoardAdapter extends RecyclerView.Adapter<ScoreBoardAdapter.It
 
     private Context context;
     private ArrayList<ScoreItem> scoreItems;
+
+    private ScoreBoardAdapter.OnClickListener onClickListener;
 
     public ScoreBoardAdapter(Context context, ArrayList<ScoreItem> scoreItems) {
         this.context = context;
@@ -44,6 +44,18 @@ public class ScoreBoardAdapter extends RecyclerView.Adapter<ScoreBoardAdapter.It
         holder.name.setText(scoreItem.getName());
 //        ImageLoader.getInstance().loadImage(scoreItem.getImage(), holder.player_IMG_icon);
 
+        holder.itemView.setOnClickListener(view -> {
+            if (onClickListener != null) {
+                onClickListener.onClick(holder.getAdapterPosition(), scoreItem);
+            }
+        });
+
+    }
+    public interface OnClickListener{
+        void onClick(int position, ScoreItem scoreItem);
+    }
+    public void setOnClickListener(OnClickListener onClickListener) {
+        this.onClickListener = onClickListener;
     }
 
     @Override
@@ -56,18 +68,6 @@ public class ScoreBoardAdapter extends RecyclerView.Adapter<ScoreBoardAdapter.It
     }
 
 
-//    private void initMap(){
-//        //initialize fragment
-//        Fragment fragment = new MapsFragment();
-//
-//        //open fragment
-//        getSupportFragmentActivityManager()
-//                .beginTransaction()
-//                .replace(R.id.frame_layout, fragment)
-//                .commit();
-//
-//    }
-
     public class ItemViewHolder extends RecyclerView.ViewHolder {
         private MaterialTextView score;
         private MaterialTextView name;
@@ -79,5 +79,7 @@ public class ScoreBoardAdapter extends RecyclerView.Adapter<ScoreBoardAdapter.It
             name = itemView.findViewById(R.id.player_Name);
         }
     }
+
+
 
 }

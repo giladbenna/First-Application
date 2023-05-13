@@ -3,6 +3,7 @@ package com.example.myapplication.View;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.widget.Button;
 
@@ -10,11 +11,13 @@ import com.example.myapplication.R;
 
 public class OpeningPage extends AppCompatActivity {
     private String playerName;
+    private Location location;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.open_page_activity);
         playerName = getIntent().getStringExtra("playerName");
+        location = getIntent().getParcelableExtra("location");
         Buttons();
 
     }
@@ -27,6 +30,8 @@ public class OpeningPage extends AppCompatActivity {
             intent.putExtra("key", true);
             intent.putExtra("fast", false);
             intent.putExtra("playerName", playerName);
+            intent.putExtra("location", location);
+
             startActivity(intent);
         });
 
@@ -37,6 +42,7 @@ public class OpeningPage extends AppCompatActivity {
             intent.putExtra("key", true);
             intent.putExtra("fast", true);
             intent.putExtra("playerName", playerName);
+            intent.putExtra("location", location);
             startActivity(intent);
         });
 
@@ -46,6 +52,7 @@ public class OpeningPage extends AppCompatActivity {
             Intent intent = new Intent(OpeningPage.this, MainActivity.class);
             intent.putExtra("key", false);
             intent.putExtra("playerName", playerName);
+            intent.putExtra("location", location);
             startActivity(intent);
         });
 
@@ -53,6 +60,8 @@ public class OpeningPage extends AppCompatActivity {
 
         scoreBoardButton.setOnClickListener(v -> {
             Intent intent = new Intent(OpeningPage.this, ScoreBoardActivity.class);
+            intent.putExtra("playerName", playerName);
+            intent.putExtra("location", location);
             startActivity(intent);
         });
     }

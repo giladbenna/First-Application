@@ -1,17 +1,21 @@
 package com.example.myapplication.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.widget.Button;
 
 import com.example.myapplication.Adapters.ScoreBoardAdapter;
+import com.example.myapplication.MapFragment;
 import com.example.myapplication.Models.ScoreItem;
 import com.example.myapplication.R;
 import com.example.myapplication.Utilities.DataManager;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -23,6 +27,7 @@ public class ScoreBoardActivity extends AppCompatActivity {
     private RecyclerView main_LST_scores;
     private  boolean isFast = false;
     private  boolean ifArrows = false;
+    private Location location;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,10 +37,24 @@ public class ScoreBoardActivity extends AppCompatActivity {
         ifArrows = intent.getBooleanExtra("key", false); // or true
         isFast = intent.getBooleanExtra("fast", false); // or true
         playerName = intent.getStringExtra("playerName");
+        location = getIntent().getParcelableExtra("location");
 
         findViews();
         initViews();
         returnButton();
+        initMap(new LatLng(location.getLatitude(),location.getLongitude()));
+    }
+
+    private void initMap(LatLng latLng){
+        //initialize fragment
+        Fragment fragment = new MapFragment(latLng);
+
+
+        //open fragment
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.frame_layout, fragment)
+                .commit();
 
     }
 
@@ -46,6 +65,15 @@ public class ScoreBoardActivity extends AppCompatActivity {
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         main_LST_scores.setLayoutManager(linearLayoutManager);
         main_LST_scores.setAdapter(scoreBoardAdapterAdapter);
+
+        scoreBoardAdapterAdapter.setOnClickListener(new ScoreBoardAdapter.OnClickListener() {
+            @Override
+            public void onClick(int position, ScoreItem scoreItem) {
+                // Passing the data to the
+                // EmployeeDetails Activity
+                initMap(scoreItem.getLatLng());
+            }
+        });
     }
     private void returnButton(){
         Button returnButton = findViewById(R.id.returnButton);
@@ -66,6 +94,8 @@ public class ScoreBoardActivity extends AppCompatActivity {
             startActivity(intent);
         });
     }
+
+
 
 
     private void findViews() {
