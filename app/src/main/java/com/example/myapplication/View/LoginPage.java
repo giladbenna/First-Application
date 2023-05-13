@@ -23,11 +23,11 @@ public class LoginPage extends AppCompatActivity {
         EditText editText = findViewById(R.id.editTextName);
         editText.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                String name = editText.getText().toString();
+                String playerName = editText.getText().toString();
 
                 // Start the new activity here
                 Intent intent = new Intent(LoginPage.this, OpeningPage.class);
-                intent.putExtra("playerName", name); // Pass the name as an extra if needed
+                intent.putExtra("playerName", playerName); // Pass the name as an extra if needed
                 startActivity(intent);
 
                 return true; // Return true to consume the event

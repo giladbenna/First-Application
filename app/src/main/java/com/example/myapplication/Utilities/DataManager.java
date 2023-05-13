@@ -11,6 +11,7 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 
 
@@ -70,8 +71,8 @@ public class DataManager {
     public void writeScoreToLeaderBoardSP(ScoreItem newRec) {
         leaderBoard.add(newRec);
 
-//        Arrays.sort(leaderBoard, new ScoreItemComparator());
-//        String delete = new Gson().toJson(new ArrayList<>());
+        Collections.sort(leaderBoard, new ScoreItemComparator());
+//      String delete = new Gson().toJson(new ArrayList<>());
         String scores_json = new Gson().toJson(leaderBoard);
         putString("array", scores_json);
     }
@@ -87,7 +88,7 @@ public class DataManager {
         @Override
         public int compare(ScoreItem item1, ScoreItem item2) {
             // Compare based on the desired parameter
-            return item1.getScore() - item2.getScore();
+            return item2.getScore() - item1.getScore();
         }
 
     }

@@ -45,7 +45,7 @@ public class OpeningPage extends AppCompatActivity {
         sensorModeButton.setOnClickListener(v -> {
             Intent intent = new Intent(OpeningPage.this, MainActivity.class);
             intent.putExtra("key", false);
-            intent.putExtra("name", playerName);
+            intent.putExtra("playerName", playerName);
             startActivity(intent);
         });
 

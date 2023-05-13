@@ -19,13 +19,19 @@ import java.util.stream.Collectors;
 
 public class ScoreBoardActivity extends AppCompatActivity {
 
-
+    private String playerName;
     private RecyclerView main_LST_scores;
+    private  boolean isFast = false;
+    private  boolean ifArrows = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_score_board_adapter);
+        Intent intent = getIntent();
+        ifArrows = intent.getBooleanExtra("key", false); // or true
+        isFast = intent.getBooleanExtra("fast", false); // or true
+        playerName = intent.getStringExtra("playerName");
 
         findViews();
         initViews();
@@ -46,6 +52,17 @@ public class ScoreBoardActivity extends AppCompatActivity {
 
         returnButton.setOnClickListener(v -> {
             Intent intent = new Intent(ScoreBoardActivity.this, OpeningPage.class);
+            intent.putExtra("playerName", playerName);
+            startActivity(intent);
+        });
+
+        Button startGameAgain = findViewById(R.id.startGameAgain);
+
+        startGameAgain.setOnClickListener(v -> {
+            Intent intent = new Intent(ScoreBoardActivity.this, MainActivity.class);
+            intent.putExtra("playerName", playerName);
+            intent.putExtra("key", ifArrows);
+            intent.putExtra("fast", isFast);
             startActivity(intent);
         });
     }

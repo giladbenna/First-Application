@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
     private StepDetector stepDetector;
     private MediaPlayer crashSound;
     private String playerName;
-
+    private  boolean isFast = false;
 
     public MainActivity() {
     }
@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        boolean isFast;
+
 
         Intent intent = getIntent();
         ifArrows = intent.getBooleanExtra("key", false); // or true
@@ -161,6 +161,9 @@ public class MainActivity extends AppCompatActivity {
                     newPlayer.setName(playerName);
                     DataManager.getInstance().writeScoreToLeaderBoardSP(newPlayer); // checks if new score and write if so
                     Intent intent = new Intent(MainActivity.this, ScoreBoardActivity.class);
+                    intent.putExtra("playerName", playerName);
+                    intent.putExtra("key", ifArrows);
+                    intent.putExtra("fast", isFast);
                     startActivity(intent);
                 }
             }

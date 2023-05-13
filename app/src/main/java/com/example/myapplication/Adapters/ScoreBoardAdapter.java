@@ -1,6 +1,8 @@
 package com.example.myapplication.Adapters;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
@@ -8,8 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.myapplication.MapsFragment;
 import com.example.myapplication.Models.ScoreItem;
 import com.example.myapplication.R;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textview.MaterialTextView;
 
@@ -50,6 +54,19 @@ public class ScoreBoardAdapter extends RecyclerView.Adapter<ScoreBoardAdapter.It
     private ScoreItem getItem(int position) {
         return this.scoreItems.get(position);
     }
+
+
+//    private void initMap(){
+//        //initialize fragment
+//        Fragment fragment = new MapsFragment();
+//
+//        //open fragment
+//        getSupportFragmentActivityManager()
+//                .beginTransaction()
+//                .replace(R.id.frame_layout, fragment)
+//                .commit();
+//
+//    }
 
     public class ItemViewHolder extends RecyclerView.ViewHolder {
         private MaterialTextView score;
