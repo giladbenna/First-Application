@@ -32,7 +32,6 @@ public class StepDetector {
             @Override
             public void onSensorChanged(SensorEvent event) {
                 float y = event.values[1];
-
                 calculateStep(y);
             }
 
