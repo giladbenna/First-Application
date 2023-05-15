@@ -146,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
                     crashSound = MediaPlayer.create(MainActivity.this, R.raw.crash_sound);
                     crashSound.start();
 
-                    if (gameManager.ifCoin(Obstacle_Coin, Obstacle_Near_Player)) {
+                    if (gameManager.ifCoin(Obstacle_Near_Player)) {
                         addHeart(life);
                         gameManager.addHeartFromManager();
                     } else {
@@ -164,6 +164,7 @@ public class MainActivity extends AppCompatActivity {
                     newPlayer.setScore(gameManager.getOdometerScore());
                     newPlayer.setName(playerName);
                     newPlayer.setLatLng(new LatLng(location.getLatitude(),location.getLongitude()));
+                    ScoreItem gilad = newPlayer;
                     DataManager.getInstance().writeScoreToLeaderBoardSP(newPlayer); // checks if new score and write if so
                     Intent intent = new Intent(MainActivity.this, ScoreBoardActivity.class);
                     intent.putExtra("playerName", playerName);

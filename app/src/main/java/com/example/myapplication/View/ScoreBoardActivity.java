@@ -81,6 +81,7 @@ public class ScoreBoardActivity extends AppCompatActivity {
         returnButton.setOnClickListener(v -> {
             Intent intent = new Intent(ScoreBoardActivity.this, OpeningPage.class);
             intent.putExtra("playerName", playerName);
+            intent.putExtra("location", location);
             startActivity(intent);
         });
 
@@ -91,6 +92,7 @@ public class ScoreBoardActivity extends AppCompatActivity {
             intent.putExtra("playerName", playerName);
             intent.putExtra("key", ifArrows);
             intent.putExtra("fast", isFast);
+            intent.putExtra("location", location);
             startActivity(intent);
         });
     }

@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.example.myapplication.Models.ScoreItem;
+import com.example.myapplication.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -44,8 +45,8 @@ public class GameManager {
         return odometerScore;
     }
 
-    public boolean ifCoin(Drawable coin, Drawable X) {
-        return coin.getConstantState().equals(X.getConstantState());
+    public boolean ifCoin(Drawable coin) {
+        return coin.equals(R.drawable.obstacle_coin);
     }
 
 

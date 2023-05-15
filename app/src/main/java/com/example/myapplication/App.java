@@ -9,6 +9,8 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         DataManager.init(this);
-        DataManager.getInstance().leaderBoard = DataManager.getInstance().readArrayScoresFromSP();
+        if (DataManager.getInstance().leaderBoard != null){
+            DataManager.getInstance().leaderBoard = DataManager.getInstance().readArrayScoresFromSP();
+        }
     }
 }
